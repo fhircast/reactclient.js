@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import HubSelector from "./components/HubSelector";
+import EventSubscriber from "./components/EventSubscriber";
 
-const HUB_URL = "http://localhost:3006";
+const HUB_URL = "http://localhost:3000";
 const HUB_ENDPOINT = "/api/hub/";
 
 const initialState = {
-  hubUrl: "",
-  hubEndpoint: ""
+  hubUrl: HUB_URL,
+  hubEndpoint: HUB_ENDPOINT
 };
 
 export default function App() {
   const [state, setState] = useState(initialState);
+  useEffect(() => {});
 
   const handleHubUrlChange = hubUrl =>
     setState({
@@ -33,6 +35,7 @@ export default function App() {
         onUrlChange={handleHubUrlChange}
         onEndpointChange={handleHubEndpointChange}
       />
+      <EventSubscriber />
     </div>
   );
 }

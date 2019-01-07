@@ -9,8 +9,8 @@ export default function HubSelector(props) {
   return (
     <div className="hub-selector">
       <div className="card">
+        <div className="card-header">Hub</div>
         <div className="card-body">
-          <h5 className="card-title">Hub</h5>
           <form>
             <div className="form-group row">
               <label htmlFor="hubUrl" className="col-sm-2 col-form-label">
