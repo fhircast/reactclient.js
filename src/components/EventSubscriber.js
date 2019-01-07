@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useInput } from "../hooks";
+import Input from "./Input";
 
 const initialState = {
   callback: "http://localhost:3000/client",
@@ -10,25 +10,6 @@ const initialState = {
   lease: 999,
   channelType: "websocket",
   channelEndPoint: ""
-};
-
-const Input = ({ name, type = "text", value, onChange }) => {
-  const input = useInput(value, onChange);
-  const nameNoDots = name.replace(".", "-");
-
-  return (
-    <div className="form-group">
-      <label htmlFor={nameNoDots}>{name}</label>
-      <input
-        type={type}
-        className="form-control"
-        id={nameNoDots}
-        name={nameNoDots}
-        value={input.value}
-        onChange={input.onChange}
-      />
-    </div>
-  );
 };
 
 export default function EventSubscriber() {
