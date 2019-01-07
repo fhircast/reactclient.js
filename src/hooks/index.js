@@ -18,3 +18,20 @@ export const useInput = (initial, onChangeCallback = null) => {
     onChange
   };
 };
+
+export const useSelect = (initial, onChangeCallback = null) => {
+  const [value, setValue] = useState(initial);
+  const onChange = value => {
+    setValue(value);
+
+    if (onChangeCallback) {
+      onChangeCallback(value);
+    }
+  };
+
+  return {
+    value,
+    setValue,
+    onChange
+  };
+};
