@@ -1,28 +1,38 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import HubSelector from "./components/HubSelector";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+const HUB_URL = "http://localhost:3006";
+const HUB_ENDPOINT = "/api/hub/";
+
+const initialState = {
+  hubUrl: "",
+  hubEndpoint: ""
+};
+
+export default function App() {
+  const [state, setState] = useState(initialState);
+
+  const handleHubUrlChange = hubUrl =>
+    setState({
+      hubUrl,
+      ...state
+    });
+
+  const handleHubEndpointChange = hubEndpoint =>
+    setState({
+      hubEndpoint,
+      ...state
+    });
+
+  return (
+    <div className="app">
+      <HubSelector
+        url={HUB_URL}
+        endpoint={HUB_ENDPOINT}
+        onUrlChange={handleHubUrlChange}
+        onEndpointChange={handleHubEndpointChange}
+      />
+    </div>
+  );
 }
-
-export default App;
