@@ -2,7 +2,13 @@ import React from "react";
 import ReactSelect from "react-select";
 import { useSelect } from "../hooks";
 
-export default function Select({ isMulti, name, options, value, onChange }) {
+export default function FormSelect({
+  isMulti,
+  name,
+  options,
+  value,
+  onChange
+}) {
   const select = useSelect(value, onChange);
   const nameNoDots = name.replace(".", "-");
 

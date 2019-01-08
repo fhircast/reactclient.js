@@ -1,22 +1,33 @@
 import React, { useState } from "react";
-import Input from "./Input";
-import Select from "./Select";
+import FormInput from "./FormInput";
+import FormSelect from "./FormSelect";
+import { sendSubscription } from "../services/fhircast";
 
-const INITIAL_STATE = {
-  callback: "http://localhost:3000/client",
-  mode: "subscribe",
-  events: ["open-patient-chart"],
-  secret: "secret",
-  topic: "DrXRay",
-  lease: 999,
-  channelType: "websocket",
-  channelEndPoint: ""
+const SubscriptionParams = {
+  callback: "hub.callback",
+  mode: "hub.mode",
+  events: "hub.events",
+  secret: "hub.secret",
+  topic: "hub.topic",
+  lease: "hub.lease",
+  channelType: "channel.type",
+  channelEndpoint: "channel.endpoint"
 };
 
-const MODES = [
-  { value: "subscribe", label: "subscribe" },
-  { value: "unsubscribe", label: "unsubscribe" }
-];
+const INITIAL_STATE = {
+  [SubscriptionParams.callback]: "http://localhost:3000/client",
+  [SubscriptionParams.events]: ["open-patient-chart"],
+  [SubscriptionParams.secret]: "secret",
+  [SubscriptionParams.topic]: "DrXRay",
+  [SubscriptionParams.lease]: 999,
+  [SubscriptionParams.channelType]: "websocket",
+  [SubscriptionParams.channelEndpoint]: ""
+};
+
+const SubscriptionMode = {
+  subscribe: "subscribe",
+  unsubscribe: "unsubscribe"
+};
 
 const EVENTS = [
   { value: "open-patient-chart", label: "open-patient-chart" },
@@ -29,29 +40,51 @@ const EVENTS = [
   { value: "hibernate-user", label: "hibernate-user" }
 ];
 
-export default function EventSubscriber() {
+const SubscriptionInput = ({ param, state, setState }) => {
+  return (
+    <FormInput
+      name={param}
+      value={state[param]}
+      onChange={value => setState({ ...state, [param]: value })}
+    />
+  );
+};
+
+export default function EventSubscriber(props) {
   const [state, setState] = useState(INITIAL_STATE);
+  const { url } = props;
+
+  const handleSubmit = e => {
+    e.preventDefault();
+  };
+
+  const handleSubscribe = () => {
+    sendSubscription(url, {
+      ...state,
+      [SubscriptionParams.mode]: SubscriptionMode.subscribe
+    });
+  };
+
+  const handleUnsubscribe = () => {
+    sendSubscription(url, {
+      ...state,
+      [SubscriptionParams.mode]: SubscriptionMode.unsubscribe
+    });
+  };
 
   return (
     <div className="event-subscription">
       <div className="card">
         <div className="card-header">Subscribe to an event</div>
         <div className="card-body">
-          <form>
-            <Input
-              name="hub.callback"
-              value={state.callback}
-              onChange={callback => setState({ ...state, callback })}
+          <form onSubmit={handleSubmit}>
+            <SubscriptionInput
+              param={SubscriptionParams.callback}
+              state={state}
+              setState={setState}
             />
-            <Select
-              name="hub.mode"
-              isMulti={false}
-              options={MODES}
-              value={MODES[0]}
-              onChange={({ value }) => setState({ ...state, mode: value })}
-            />
-            <Select
-              name="hub.events"
+            <FormSelect
+              name={SubscriptionParams.events}
               isMulti={true}
               options={EVENTS}
               value={[EVENTS[0]]}
@@ -59,28 +92,32 @@ export default function EventSubscriber() {
                 setState({ ...state, events: options.map(o => o.value) })
               }
             />
-            <Input
-              name="hub.secret"
-              value={state.secret}
-              onChange={secret => setState({ ...state, secret })}
+            <SubscriptionInput
+              param={SubscriptionParams.secret}
+              state={state}
+              setState={setState}
             />
-            <Input
-              name="hub.topic"
-              value={state.topic}
-              onChange={topic => setState({ ...state, topic })}
+            <SubscriptionInput
+              param={SubscriptionParams.topic}
+              state={state}
+              setState={setState}
             />
-            <Input
-              name="hub.channel.type"
-              value={state.channelType}
-              onChange={channelType => setState({ ...state, channelType })}
+            <SubscriptionInput
+              param={SubscriptionParams.channelType}
+              state={state}
+              setState={setState}
             />
-            <Input
-              name="hub.channel.endpoint"
-              value={state.channelEndPoint}
-              onChange={channelEndPoint =>
-                setState({ ...state, channelEndPoint })
-              }
+            <SubscriptionInput
+              param={SubscriptionParams.channelEndpoint}
+              state={state}
+              setState={setState}
             />
+            <button className="btn btn-primary mr-1" onClick={handleSubscribe}>
+              Subscribe
+            </button>
+            <button className="btn btn-secondary" onClick={handleUnsubscribe}>
+              Unsubscribe
+            </button>
           </form>
         </div>
       </div>

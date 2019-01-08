@@ -35,7 +35,7 @@ export default function App() {
         onUrlChange={handleHubUrlChange}
         onEndpointChange={handleHubEndpointChange}
       />
-      <EventSubscriber />
+      <EventSubscriber url={HUB_URL + HUB_ENDPOINT} />
     </div>
   );
 }
