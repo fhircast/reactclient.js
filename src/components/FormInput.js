@@ -2,7 +2,10 @@ import React from "react";
 import { useInput } from "../hooks";
 
 export default function FormInput({ name, type = "text", value, onChange }) {
-  const input = useInput(value, onChange);
+  const input = useInput({
+    initialValue: value,
+    onChange
+  });
   const nameNoDots = name.replace(".", "-");
 
   return (

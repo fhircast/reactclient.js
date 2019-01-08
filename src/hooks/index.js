@@ -1,13 +1,38 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
-export const useInput = (initial, onChangeCallback = null) => {
-  const [value, setValue] = useState(initial);
-  const onChange = e => {
+const WAIT_INTERVAL = 1000;
+const ENTER_KEY = 13;
+
+export const useInput = ({
+  initialValue = "",
+  onChange = null,
+  isDeferred = false
+} = {}) => {
+  const [value, setValue] = useState(initialValue);
+  const intervalRef = useRef();
+
+  const notifyChange = (triggerTimer = false) => {
+    if (!onChange) {
+      return;
+    }
+
+    if (triggerTimer) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = setTimeout(() => onChange(value), WAIT_INTERVAL);
+    } else {
+      onChange(value);
+    }
+  };
+
+  const handleChange = e => {
     const value = e.target.value;
     setValue(value);
+    notifyChange(isDeferred);
+  };
 
-    if (onChangeCallback) {
-      onChangeCallback(value);
+  const handleKeyDown = e => {
+    if (isDeferred && e.keyCode === ENTER_KEY) {
+      notifyChange(false);
     }
   };
 
@@ -15,12 +40,13 @@ export const useInput = (initial, onChangeCallback = null) => {
     value,
     setValue,
     hasValue: value !== undefined && value !== null,
-    onChange
+    onChange: handleChange,
+    onKeyDown: handleKeyDown
   };
 };
 
-export const useSelect = (initial, onChangeCallback = null) => {
-  const [value, setValue] = useState(initial);
+export const useSelect = ({ initialValue, onChangeCallback = null } = {}) => {
+  const [value, setValue] = useState(initialValue);
   const onChange = value => {
     setValue(value);
 

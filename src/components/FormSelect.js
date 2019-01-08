@@ -9,7 +9,7 @@ export default function FormSelect({
   value,
   onChange
 }) {
-  const select = useSelect(value, onChange);
+  const select = useSelect({ initialValue: value, onChange });
   const nameNoDots = name.replace(".", "-");
 
   return (

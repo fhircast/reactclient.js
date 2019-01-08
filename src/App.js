@@ -3,39 +3,28 @@ import "./App.css";
 import HubSelector from "./components/Hub";
 import Subscription from "./components/Subscription";
 
-const HUB_URL = "http://localhost:3000";
-const HUB_ENDPOINT = "/api/hub/";
+const HUB_URL = "http://localhost:3000/api/hub/";
 
 const initialState = {
-  hubUrl: HUB_URL,
-  hubEndpoint: HUB_ENDPOINT
+  hubUrl: HUB_URL
 };
 
 export default function App() {
   const [state, setState] = useState(initialState);
   useEffect(() => {});
 
-  const handleHubUrlChange = hubUrl =>
+  const handleHubUrlChange = hubUrl => {
+    console.log(hubUrl);
     setState({
       hubUrl,
       ...state
     });
-
-  const handleHubEndpointChange = hubEndpoint =>
-    setState({
-      hubEndpoint,
-      ...state
-    });
+  };
 
   return (
     <div className="app">
-      <HubSelector
-        url={HUB_URL}
-        endpoint={HUB_ENDPOINT}
-        onUrlChange={handleHubUrlChange}
-        onEndpointChange={handleHubEndpointChange}
-      />
-      <Subscription url={HUB_URL + HUB_ENDPOINT} />
+      <HubSelector url={HUB_URL} onUrlChange={handleHubUrlChange} />
+      <Subscription url={HUB_URL} />
     </div>
   );
 }
