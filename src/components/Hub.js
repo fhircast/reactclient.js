@@ -1,7 +1,7 @@
 import React from "react";
 import { useInput } from "../hooks";
 
-export default function HubSelector(props) {
+export default function Hub(props) {
   const { url, endpoint, onUrlChange, onEndpointChange } = props;
   const urlInput = useInput(url, onUrlChange);
   const endpointInput = useInput(endpoint, onEndpointChange);

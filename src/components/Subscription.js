@@ -50,7 +50,7 @@ const SubscriptionInput = ({ param, state, setState }) => {
   );
 };
 
-export default function EventSubscriber(props) {
+export default function Subscription(props) {
   const [state, setState] = useState(INITIAL_STATE);
   const { url } = props;
 
