@@ -20,7 +20,7 @@ export default function App() {
   };
 
   return (
-    <div className="app">
+    <div className="container">
       <HubSelector url={state.hubUrl} onUrlChange={handleHubUrlChange} />
       <Subscription url={state.hubUrl} />
     </div>

@@ -11,7 +11,7 @@ export async function sendSubscription(url, subscription) {
     return response;
   } catch (error) {
     console.error(error);
-    return error;
+    return null;
   }
 }
 
@@ -20,9 +20,9 @@ export async function getHubStatus(url) {
   try {
     const response = await axios.post(`${url}/status`);
     console.log(response);
-    return true;
+    return response;
   } catch (error) {
     console.error(error);
-    return false;
+    return error;
   }
 }
