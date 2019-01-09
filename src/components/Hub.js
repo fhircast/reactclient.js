@@ -5,21 +5,25 @@ export default function Hub({ url, onUrlChange }) {
   const urlInput = useInput({
     initialValue: url,
     onChange: onUrlChange,
-    isDeferred: true
+    isDeferred: false
   });
+
+  const handleSubmit = e => {
+    e.preventDefault();
+  };
 
   return (
     <div className="hub-selector">
       <div className="card">
         <div className="card-header">Hub</div>
         <div className="card-body">
-          <form>
-            <div className="form-group">
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
               <input
                 type="text"
-                className="form-control"
                 id="hubUrl"
                 name="hubUrl"
+                className="form-control"
                 placeholder="URL"
                 value={urlInput.value}
                 onChange={urlInput.onChange}

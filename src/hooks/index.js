@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-const WAIT_INTERVAL = 1000;
+const WAIT_INTERVAL = 500;
 const ENTER_KEY = 13;
 
 export const useInput = ({
@@ -11,28 +11,28 @@ export const useInput = ({
   const [value, setValue] = useState(initialValue);
   const intervalRef = useRef();
 
-  const notifyChange = (triggerTimer = false) => {
+  const notifyChange = (newValue, triggerTimer = false) => {
     if (!onChange) {
       return;
     }
 
     if (triggerTimer) {
       clearInterval(intervalRef.current);
-      intervalRef.current = setTimeout(() => onChange(value), WAIT_INTERVAL);
+      intervalRef.current = setTimeout(() => onChange(newValue), WAIT_INTERVAL);
     } else {
-      onChange(value);
+      onChange(newValue);
     }
   };
 
   const handleChange = e => {
-    const value = e.target.value;
-    setValue(value);
-    notifyChange(isDeferred);
+    const newValue = e.target.value;
+    setValue(newValue);
+    notifyChange(newValue, isDeferred);
   };
 
   const handleKeyDown = e => {
     if (isDeferred && e.keyCode === ENTER_KEY) {
-      notifyChange(false);
+      notifyChange(value, false);
     }
   };
 
