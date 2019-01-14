@@ -1,8 +1,11 @@
 import axios from "axios";
 
 export async function sendSubscription(url, subscription) {
-  if (Array.isArray(subscription.events)) {
-    subscription = { ...subscription, events: subscription.events.join(",") };
+  if (Array.isArray(subscription["hub.events"])) {
+    subscription = {
+      ...subscription,
+      "hub.events": subscription["hub.events"].join(",")
+    };
   }
 
   try {

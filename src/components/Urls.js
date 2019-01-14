@@ -14,7 +14,7 @@ export default function Urls({
   return (
     <div>
       <div className="card">
-        <div className="card-header">Hub</div>
+        <div className="card-header">URLs</div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <FormInput
