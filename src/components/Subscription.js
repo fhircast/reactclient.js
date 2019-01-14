@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { sendSubscription } from "../services/fhircast";
+import uuid from "uuid";
 
 const SubscriptionParams = {
   callback: "hub.callback",
@@ -41,19 +42,9 @@ const INITIAL_STATE = {
     [SubscriptionParams.topic]: "DrXRay",
     [SubscriptionParams.lease]: 999,
     [SubscriptionParams.channelType]: "websocket",
-    [SubscriptionParams.channelEndpoint]: ""
+    [SubscriptionParams.channelEndpoint]: uuid.v4()
   },
   response: undefined
-};
-
-const SubscriptionInput = ({ param, sub, setState: setSub }) => {
-  return (
-    <FormInput
-      name={param}
-      value={sub[param]}
-      onChange={value => setSub({ ...sub, [param]: value })}
-    />
-  );
 };
 
 const SubscriptionStatus = ({ response }) => {
@@ -108,13 +99,15 @@ export default function Subscription(props) {
         <div className="card-body">
           <div className="my-4">
             <form onSubmit={handleSubmit}>
-              <SubscriptionInput
-                param={SubscriptionParams.callback}
-                sub={sub}
-                setSub={setSub}
+              <FormInput
+                name="Client"
+                value={sub[SubscriptionParams.callback]}
+                onChange={value =>
+                  setSub({ ...sub, [SubscriptionParams.callback]: value })
+                }
               />
               <FormSelect
-                name={SubscriptionParams.events}
+                name="Events"
                 isMulti={true}
                 options={toSelectOptions(Object.values(EventType))}
                 value={toSelectOptions(sub[SubscriptionParams.events])}
@@ -125,25 +118,12 @@ export default function Subscription(props) {
                   })
                 }
               />
-              <SubscriptionInput
-                param={SubscriptionParams.secret}
-                sub={sub}
-                setSub={setSub}
-              />
-              <SubscriptionInput
-                param={SubscriptionParams.topic}
-                sub={sub}
-                setSub={setSub}
-              />
-              <SubscriptionInput
-                param={SubscriptionParams.channelType}
-                sub={sub}
-                setSub={setSub}
-              />
-              <SubscriptionInput
-                param={SubscriptionParams.channelEndpoint}
-                sub={sub}
-                setSub={setSub}
+              <FormInput
+                name="Topic"
+                value={sub[SubscriptionParams.topic]}
+                onChange={value =>
+                  setSub({ ...sub, [SubscriptionParams.topic]: value })
+                }
               />
               <button
                 className="btn btn-primary mr-1"
