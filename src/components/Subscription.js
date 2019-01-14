@@ -33,7 +33,6 @@ const EventType = {
 
 const INITIAL_STATE = {
   subscription: {
-    [SubscriptionParams.callback]: "http://localhost:3000/client",
     [SubscriptionParams.events]: [
       EventType.OpenPatientChart,
       EventType.ClosePatientChart
@@ -64,15 +63,16 @@ const isSuccess = response =>
 export default function Subscription(props) {
   const [sub, setSub] = useState(INITIAL_STATE.subscription);
   const [response, setResponse] = useState(INITIAL_STATE.response);
-  const { url, onSubscribe, onUnsubscribe } = props;
+  const { hubUrl, clientUrl, onSubscribe, onUnsubscribe } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
   };
 
   const handleSubscribe = async mode => {
-    const newResponse = await sendSubscription(url, {
+    const newResponse = await sendSubscription(hubUrl, {
       ...sub,
+      [SubscriptionParams.callback]: clientUrl,
       [SubscriptionParams.mode]: mode
     });
 
@@ -82,8 +82,8 @@ export default function Subscription(props) {
       const callback =
         mode === SubscriptionMode.subscribe ? onSubscribe : onUnsubscribe;
       callback({
-        hubUrl: url,
-        callback: sub[SubscriptionParams.callback],
+        hubUrl,
+        clientUrl,
         topic: sub[SubscriptionParams.topic],
         events: sub[SubscriptionParams.events]
       });
@@ -95,15 +95,15 @@ export default function Subscription(props) {
   return (
     <div className="event-subscription">
       <div className="card">
-        <div className="card-header">Subscribe to an event</div>
+        <div className="card-header">Subscribe to events</div>
         <div className="card-body">
           <div className="mb-3">
             <form onSubmit={handleSubmit}>
               <FormInput
-                name="Client"
-                value={sub[SubscriptionParams.callback]}
+                name="Topic"
+                value={sub[SubscriptionParams.topic]}
                 onChange={value =>
-                  setSub({ ...sub, [SubscriptionParams.callback]: value })
+                  setSub({ ...sub, [SubscriptionParams.topic]: value })
                 }
               />
               <FormSelect
@@ -116,13 +116,6 @@ export default function Subscription(props) {
                     ...sub,
                     [SubscriptionParams.events]: options.map(o => o.value)
                   })
-                }
-              />
-              <FormInput
-                name="Topic"
-                value={sub[SubscriptionParams.topic]}
-                onChange={value =>
-                  setSub({ ...sub, [SubscriptionParams.topic]: value })
                 }
               />
               <button

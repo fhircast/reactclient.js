@@ -1,27 +1,23 @@
 import React, { useState } from "react";
 import "./App.css";
-import Hub from "./components/Hub";
+import Urls from "./components/Urls";
 import Subscription from "./components/Subscription";
 import SubList from "./components/SubList";
 
 const HUB_URL = "http://localhost:3000/api/hub";
+const CLIENT_URL = "http://localhost:3000/client";
 
 const initialState = {
   hubUrl: HUB_URL,
+  clientUrl: CLIENT_URL,
   subscriptions: {}
 };
 
 export default function App() {
   const [state, setState] = useState(initialState);
 
-  const getSubKey = ({ hubUrl, callback, topic }) => callback + topic;
-
-  const handleHubUrlChange = hubUrl => {
-    setState({
-      ...state,
-      hubUrl
-    });
-  };
+  const getSubKey = ({ hubUrl, clientUrl, topic }) =>
+    hubUrl + clientUrl + topic;
 
   const handleSub = sub => {
     const subscriptions = {
@@ -61,9 +57,25 @@ export default function App() {
 
   return (
     <div className="container">
-      <Hub url={state.hubUrl} onUrlChange={handleHubUrlChange} />
+      <Urls
+        hubUrl={state.hubUrl}
+        onHubUrlChange={hubUrl =>
+          setState({
+            ...state,
+            hubUrl
+          })
+        }
+        clientUrl={state.clientUrl}
+        onClientUrlChange={clientUrl =>
+          setState({
+            ...state,
+            clientUrl
+          })
+        }
+      />
       <Subscription
-        url={state.hubUrl}
+        hubUrl={state.hubUrl}
+        clientUrl={state.clientUrl}
         onSubscribe={handleSub}
         onUnsubscribe={handleUnsub}
       />
