@@ -45,19 +45,19 @@ export const useInput = ({
   };
 };
 
-export const useSelect = ({ initialValue, onChangeCallback = null } = {}) => {
+export const useSelect = ({ initialValue, onChange = null } = {}) => {
   const [value, setValue] = useState(initialValue);
-  const onChange = value => {
+  const handleChange = value => {
     setValue(value);
 
-    if (onChangeCallback) {
-      onChangeCallback(value);
+    if (onChange) {
+      onChange(value);
     }
   };
 
   return {
     value,
     setValue,
-    onChange
+    onChange: handleChange
   };
 };

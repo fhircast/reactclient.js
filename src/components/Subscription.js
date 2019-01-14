@@ -14,10 +14,29 @@ const SubscriptionParams = {
   channelEndpoint: "channel.endpoint"
 };
 
+const SubscriptionMode = {
+  subscribe: "subscribe",
+  unsubscribe: "unsubscribe"
+};
+
+const EventType = {
+  OpenPatientChart: "open-patient-chart",
+  SwitchPatientChart: "switch-patient-chart",
+  ClosePatientChart: "close-patient-chart",
+  OpenImagingStudy: "open-imaging-study",
+  SwitchImagingStudy: "switch-imaging-study",
+  CloseImagingStudy: "close-imaging-study",
+  LogoutUser: "logout-user",
+  HibernateUser: "hibernate-user"
+};
+
 const INITIAL_STATE = {
   subscription: {
     [SubscriptionParams.callback]: "http://localhost:3000/client",
-    [SubscriptionParams.events]: ["open-patient-chart"],
+    [SubscriptionParams.events]: [
+      EventType.OpenPatientChart,
+      EventType.ClosePatientChart
+    ],
     [SubscriptionParams.secret]: "secret",
     [SubscriptionParams.topic]: "DrXRay",
     [SubscriptionParams.lease]: 999,
@@ -27,28 +46,12 @@ const INITIAL_STATE = {
   response: undefined
 };
 
-const SubscriptionMode = {
-  subscribe: "subscribe",
-  unsubscribe: "unsubscribe"
-};
-
-const EVENTS = [
-  { value: "open-patient-chart", label: "open-patient-chart" },
-  { value: "switch-patient-chart", label: "switch-patient-chart" },
-  { value: "close-patient-chart", label: "close-patient-chart" },
-  { value: "open-imaging-study", label: "open-imaging-study" },
-  { value: "switch-imaging-study", label: "switch-imaging-study" },
-  { value: "close-imaging-study", label: "close-imaging-study" },
-  { value: "logout-user", label: "logout-user" },
-  { value: "hibernate-user", label: "hibernate-user" }
-];
-
-const SubscriptionInput = ({ param, state, setState }) => {
+const SubscriptionInput = ({ param, sub, setState: setSub }) => {
   return (
     <FormInput
       name={param}
-      value={state[param]}
-      onChange={value => setState({ ...state, [param]: value })}
+      value={sub[param]}
+      onChange={value => setSub({ ...sub, [param]: value })}
     />
   );
 };
@@ -58,29 +61,45 @@ const SubscriptionStatus = ({ response }) => {
     return null;
   }
 
-  const wasSuccessful =
-    response && response.status >= 200 && response.status < 300;
+  const wasSuccessful = isSuccess(response);
   const alertType = wasSuccessful ? "alert-success" : "alert-danger";
   const alertText = wasSuccessful ? response.statusText : "Error";
   return <small className={`alert ${alertType}`}>{alertText}</small>;
 };
 
+const isSuccess = response =>
+  response && response.status >= 200 && response.status < 300;
+
 export default function Subscription(props) {
-  const [state, setState] = useState(INITIAL_STATE);
-  const { url } = props;
+  const [sub, setSub] = useState(INITIAL_STATE.subscription);
+  const [response, setResponse] = useState(INITIAL_STATE.response);
+  const { url, onSubscribe, onUnsubscribe } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
   };
 
   const handleSubscribe = async mode => {
-    const { subscription } = state;
-    const response = await sendSubscription(url, {
-      ...subscription,
+    const newResponse = await sendSubscription(url, {
+      ...sub,
       [SubscriptionParams.mode]: mode
     });
-    setState({ ...state, response });
+
+    setResponse(newResponse);
+
+    if (isSuccess(newResponse)) {
+      const callback =
+        mode === SubscriptionMode.subscribe ? onSubscribe : onUnsubscribe;
+      callback({
+        hubUrl: url,
+        callback: sub[SubscriptionParams.callback],
+        topic: sub[SubscriptionParams.topic],
+        events: sub[SubscriptionParams.events]
+      });
+    }
   };
+
+  const toSelectOptions = values => values.map(v => ({ value: v, label: v }));
 
   return (
     <div className="event-subscription">
@@ -91,37 +110,40 @@ export default function Subscription(props) {
             <form onSubmit={handleSubmit}>
               <SubscriptionInput
                 param={SubscriptionParams.callback}
-                state={state}
-                setState={setState}
+                sub={sub}
+                setSub={setSub}
               />
               <FormSelect
                 name={SubscriptionParams.events}
                 isMulti={true}
-                options={EVENTS}
-                value={[EVENTS[0]]}
+                options={toSelectOptions(Object.values(EventType))}
+                value={toSelectOptions(sub[SubscriptionParams.events])}
                 onChange={options =>
-                  setState({ ...state, events: options.map(o => o.value) })
+                  setSub({
+                    ...sub,
+                    [SubscriptionParams.events]: options.map(o => o.value)
+                  })
                 }
               />
               <SubscriptionInput
                 param={SubscriptionParams.secret}
-                state={state}
-                setState={setState}
+                sub={sub}
+                setSub={setSub}
               />
               <SubscriptionInput
                 param={SubscriptionParams.topic}
-                state={state}
-                setState={setState}
+                sub={sub}
+                setSub={setSub}
               />
               <SubscriptionInput
                 param={SubscriptionParams.channelType}
-                state={state}
-                setState={setState}
+                sub={sub}
+                setSub={setSub}
               />
               <SubscriptionInput
                 param={SubscriptionParams.channelEndpoint}
-                state={state}
-                setState={setState}
+                sub={sub}
+                setSub={setSub}
               />
               <button
                 className="btn btn-primary mr-1"
@@ -137,7 +159,7 @@ export default function Subscription(props) {
               </button>
             </form>
           </div>
-          <SubscriptionStatus response={state.response} />
+          <SubscriptionStatus response={response} />
         </div>
       </div>
     </div>
