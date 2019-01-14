@@ -7,29 +7,21 @@ import SubList from "./components/SubList";
 const HUB_URL = "http://localhost:3000/api/hub";
 const CLIENT_URL = "http://localhost:3000/client";
 
-const initialState = {
-  hubUrl: HUB_URL,
-  clientUrl: CLIENT_URL,
-  subscriptions: {}
-};
-
 export default function App() {
-  const [state, setState] = useState(initialState);
+  const [hubUrl, setHubUrl] = useState(HUB_URL);
+  const [clientUrl, setClientUrl] = useState(CLIENT_URL);
+  const [subscriptions, setSubscriptions] = useState({});
 
   const getSubKey = ({ hubUrl, clientUrl, topic }) =>
     hubUrl + clientUrl + topic;
 
   const handleSub = sub => {
-    const subscriptions = {
-      ...state.subscriptions,
-      [getSubKey(sub)]: sub
-    };
-    setState({ ...state, subscriptions });
+    setSubscriptions({ ...subscriptions, [getSubKey(sub)]: sub });
   };
 
   const handleUnsub = sub => {
     const subKey = getSubKey(sub);
-    const foundSub = state.subscriptions[subKey];
+    const foundSub = subscriptions[subKey];
     if (!foundSub) {
       return;
     }
@@ -44,38 +36,27 @@ export default function App() {
             ...foundSub,
             events: remainingEvents
           };
-    const subscriptions = {
-      ...state.subscriptions,
+    setSubscriptions({
+      ...subscriptions,
       [subKey]: newSub
-    };
-    setState({ ...state, subscriptions });
+    });
   };
 
   const getSubArray = () => {
-    return Object.values(state.subscriptions).filter(sub => Boolean(sub));
+    return Object.values(subscriptions).filter(sub => Boolean(sub));
   };
 
   return (
     <div className="container">
       <Urls
-        hubUrl={state.hubUrl}
-        onHubUrlChange={hubUrl =>
-          setState({
-            ...state,
-            hubUrl
-          })
-        }
-        clientUrl={state.clientUrl}
-        onClientUrlChange={clientUrl =>
-          setState({
-            ...state,
-            clientUrl
-          })
-        }
+        hubUrl={hubUrl}
+        onHubUrlChange={hubUrl => setHubUrl(hubUrl)}
+        clientUrl={clientUrl}
+        onClientUrlChange={clientUrl => setClientUrl(clientUrl)}
       />
       <Subscription
-        hubUrl={state.hubUrl}
-        clientUrl={state.clientUrl}
+        hubUrl={hubUrl}
+        clientUrl={clientUrl}
         onSubscribe={handleSub}
         onUnsubscribe={handleUnsub}
       />

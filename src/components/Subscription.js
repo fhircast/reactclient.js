@@ -31,20 +31,20 @@ const EventType = {
   HibernateUser: "hibernate-user"
 };
 
-const INITIAL_STATE = {
-  subscription: {
-    [SubscriptionParams.events]: [
-      EventType.OpenPatientChart,
-      EventType.ClosePatientChart
-    ],
-    [SubscriptionParams.secret]: "secret",
-    [SubscriptionParams.topic]: "DrXRay",
-    [SubscriptionParams.lease]: 999,
-    [SubscriptionParams.channelType]: "websocket",
-    [SubscriptionParams.channelEndpoint]: uuid.v4()
-  },
-  response: undefined
+const INITIAL_SUB = {
+  [SubscriptionParams.events]: [
+    EventType.OpenPatientChart,
+    EventType.ClosePatientChart
+  ],
+  [SubscriptionParams.secret]: "secret",
+  [SubscriptionParams.topic]: "DrXRay",
+  [SubscriptionParams.lease]: 999,
+  [SubscriptionParams.channelType]: "websocket",
+  [SubscriptionParams.channelEndpoint]: uuid.v4()
 };
+
+const isSuccess = response =>
+  response && response.status >= 200 && response.status < 300;
 
 const SubscriptionStatus = ({ response }) => {
   if (response === undefined) {
@@ -57,12 +57,9 @@ const SubscriptionStatus = ({ response }) => {
   return <small className={`d-block alert ${alertType}`}>{alertText}</small>;
 };
 
-const isSuccess = response =>
-  response && response.status >= 200 && response.status < 300;
-
 export default function Subscription(props) {
-  const [sub, setSub] = useState(INITIAL_STATE.subscription);
-  const [response, setResponse] = useState(INITIAL_STATE.response);
+  const [sub, setSub] = useState(INITIAL_SUB);
+  const [response, setResponse] = useState(undefined);
   const { hubUrl, clientUrl, onSubscribe, onUnsubscribe } = props;
 
   const handleSubmit = e => {
