@@ -53,7 +53,7 @@ const SubscriptionStatus = ({ response }) => {
 
   const wasSuccessful = isSuccess(response);
   const alertType = wasSuccessful ? "alert-success" : "alert-danger";
-  const alertText = wasSuccessful ? response.statusText : "Error";
+  const alertText = response ? response.statusText : "Network Error";
   return <small className={`d-block alert ${alertType}`}>{alertText}</small>;
 };
 

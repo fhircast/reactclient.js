@@ -11,7 +11,7 @@ export async function sendSubscription(url, subscription) {
     return response;
   } catch (error) {
     console.error(error);
-    return null;
+    return error.status ? error : null;
   }
 }
 

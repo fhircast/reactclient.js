@@ -9,7 +9,9 @@ function SubRow({ sub }) {
       <td>{topic}</td>
       <td>
         {events.map(e => (
-          <span class="badge badge-pill badge-info">{e}</span>
+          <span key={e} className="badge badge-pill badge-info">
+            {e}
+          </span>
         ))}
       </td>
     </tr>
