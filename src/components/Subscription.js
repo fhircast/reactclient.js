@@ -55,7 +55,7 @@ const SubscriptionStatus = ({ response }) => {
   const wasSuccessful = isSuccess(response);
   const alertType = wasSuccessful ? "alert-success" : "alert-danger";
   const alertText = wasSuccessful ? response.statusText : "Error";
-  return <small className={`alert ${alertType}`}>{alertText}</small>;
+  return <small className={`d-block alert ${alertType}`}>{alertText}</small>;
 };
 
 const isSuccess = response =>
@@ -97,7 +97,7 @@ export default function Subscription(props) {
       <div className="card">
         <div className="card-header">Subscribe to an event</div>
         <div className="card-body">
-          <div className="my-4">
+          <div className="mb-3">
             <form onSubmit={handleSubmit}>
               <FormInput
                 name="Client"
