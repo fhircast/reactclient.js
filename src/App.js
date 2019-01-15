@@ -76,9 +76,9 @@ export default function App() {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
-        <div className="col-md">
+        <div className="col-md top-buffer">
           <Urls
             hubUrl={hubUrl}
             onHubUrlChange={setHubUrl}
@@ -89,7 +89,7 @@ export default function App() {
             isReadOnly={isWsConnected}
           />
         </div>
-        <div className="col-md">
+        <div className="col-md top-buffer">
           <Subscription
             hubUrl={hubUrl}
             clientUrl={clientUrl}
@@ -98,12 +98,10 @@ export default function App() {
             onUnsubscribe={handleUnsub}
           />
         </div>
-        <div className="col-md">
+        <div className="col-md top-buffer">
           <SubList subs={getSubArray()} />
         </div>
-      </div>
-      <div className="row">
-        <div className="col-md">
+        <div className="col-md top-buffer">
           <WebsocketStatus
             websocketUrl={wsUrl}
             endpoint={WS_ENDPOINT}
@@ -113,10 +111,10 @@ export default function App() {
             onDisconnect={handleWsDisconnect}
           />
         </div>
-        <div className="col-md">
+        <div className="col-md top-buffer">
           <Events events={events} />
         </div>
-        <div className="col-md" />
+        <div className="col-md top-buffer" />
       </div>
     </div>
   );

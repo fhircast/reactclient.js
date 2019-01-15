@@ -18,23 +18,25 @@ function EventRow({ evt, index }) {
 
 export default function Events({ events }) {
   return (
-    <div className="card">
-      <div className="card-header">Received events</div>
-      <div className="card-body">
-        <div className="table-responsive-sm">
-          <table className="table table-sm">
-            <thead>
-              <tr>
-                <th scope="col">Topic</th>
-                <th scope="col">Event</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((evt, index) => (
-                <EventRow key={index} evt={evt} index={index} />
-              ))}
-            </tbody>
-          </table>
+    <div className="fc-card">
+      <div className="card">
+        <div className="card-header">Received events</div>
+        <div className="card-body">
+          <div className="table-responsive-sm">
+            <table className="table table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Topic</th>
+                  <th scope="col">Event</th>
+                </tr>
+              </thead>
+              <tbody>
+                {events.map((evt, index) => (
+                  <EventRow key={index} evt={evt} index={index} />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

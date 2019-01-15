@@ -89,7 +89,7 @@ export default function Subscription(props) {
   const toSelectOptions = values => values.map(v => ({ value: v, label: v }));
 
   return (
-    <div className="event-subscription">
+    <div className="fc-card">
       <div className="card">
         <div className="card-header">Subscribe to events</div>
         <div className="card-body">

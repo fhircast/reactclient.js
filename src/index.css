@@ -12,3 +12,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.fc-card {
+  width: 20em;
+  height: 100%;
+}
+
+.fc-card .card {
+  width: 20em;
+  height: 100%;
+}
+
+.top-buffer {
+  margin-top: 1em;
+}

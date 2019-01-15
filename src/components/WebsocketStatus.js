@@ -98,7 +98,13 @@ export default function WebsocketStatus({
 
   const getStatusText = () => {
     if (status === Status.Connected) {
-      return `Connected to ${endpoint}`;
+      return (
+        <span>
+          <strong>Connected to</strong>
+          <br />
+          {endpoint}
+        </span>
+      );
     }
 
     return status === Status.Connecting ? "Connecting..." : "Not connected";
@@ -106,8 +112,8 @@ export default function WebsocketStatus({
 
   const bgColor = STATUS_BG_COLORS[status];
   return (
-    <div>
-      <div className={`card text-white ${bgColor}`}>
+    <div className="fc-card">
+      <div className={`card text-white ${bgColor} h-100`}>
         <div className="card-header">Websocket</div>
         <div className="card-body">
           <p>{getStatusText()}</p>

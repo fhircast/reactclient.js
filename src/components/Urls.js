@@ -15,7 +15,7 @@ export default function Urls({
   };
 
   return (
-    <div>
+    <div className="fc-card">
       <div className="card">
         <div className="card-header">URLs</div>
         <div className="card-body">
