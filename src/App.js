@@ -55,7 +55,7 @@ export default function App() {
   };
 
   const handleEvent = evt => {
-    setEvents([evt, ...events]);
+    setEvents(prevEvents => [evt, ...prevEvents]);
   };
 
   const handleWsConnect = () => {
