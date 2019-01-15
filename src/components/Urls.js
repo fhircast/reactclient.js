@@ -5,7 +5,10 @@ export default function Urls({
   hubUrl,
   onHubUrlChange,
   clientUrl,
-  onClientUrlChange
+  onClientUrlChange,
+  websocketUrl,
+  onWebsocketUrlChange,
+  isReadOnly
 }) {
   const handleSubmit = e => {
     e.preventDefault();
@@ -21,11 +24,19 @@ export default function Urls({
               name="Hub URL"
               value={hubUrl}
               onChange={onHubUrlChange}
+              isReadOnly={isReadOnly}
             />
             <FormInput
               name="Client URL"
               value={clientUrl}
               onChange={onClientUrlChange}
+              isReadOnly={isReadOnly}
+            />
+            <FormInput
+              name="Websocket URL"
+              value={websocketUrl}
+              onChange={onWebsocketUrlChange}
+              isReadOnly={isReadOnly}
             />
           </form>
         </div>

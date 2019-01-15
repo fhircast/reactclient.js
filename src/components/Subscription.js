@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { sendSubscription } from "../services/fhircast";
-import uuid from "uuid";
 
 const SubscriptionParams = {
   callback: "hub.callback",
@@ -11,8 +10,8 @@ const SubscriptionParams = {
   secret: "hub.secret",
   topic: "hub.topic",
   lease: "hub.lease",
-  channelType: "channel.type",
-  channelEndpoint: "channel.endpoint"
+  channelType: "hub.channel.type",
+  channelEndpoint: "hub.channel.endpoint"
 };
 
 const SubscriptionMode = {
@@ -39,8 +38,7 @@ const INITIAL_SUB = {
   [SubscriptionParams.secret]: "secret",
   [SubscriptionParams.topic]: "DrXRay",
   [SubscriptionParams.lease]: 999,
-  [SubscriptionParams.channelType]: "websocket",
-  [SubscriptionParams.channelEndpoint]: uuid.v4()
+  [SubscriptionParams.channelType]: "websocket"
 };
 
 const isSuccess = response =>
@@ -60,7 +58,7 @@ const SubscriptionStatus = ({ response }) => {
 export default function Subscription(props) {
   const [sub, setSub] = useState(INITIAL_SUB);
   const [response, setResponse] = useState(undefined);
-  const { hubUrl, clientUrl, onSubscribe, onUnsubscribe } = props;
+  const { hubUrl, clientUrl, wsEndpoint, onSubscribe, onUnsubscribe } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -70,7 +68,8 @@ export default function Subscription(props) {
     const newResponse = await sendSubscription(hubUrl, {
       ...sub,
       [SubscriptionParams.callback]: clientUrl,
-      [SubscriptionParams.mode]: mode
+      [SubscriptionParams.mode]: mode,
+      [SubscriptionParams.channelEndpoint]: wsEndpoint
     });
 
     setResponse(newResponse);

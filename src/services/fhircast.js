@@ -8,8 +8,8 @@ export async function sendSubscription(url, subscription) {
     };
   }
 
+  const response = await axios.post(url, subscription);
   try {
-    const response = await axios.post(url, subscription);
     console.log(response);
     return response;
   } catch (error) {
