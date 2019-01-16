@@ -2,43 +2,23 @@ import React, { useState } from "react";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { sendSubscription } from "../services/fhircast";
-
-const SubscriptionParams = {
-  callback: "hub.callback",
-  mode: "hub.mode",
-  events: "hub.events",
-  secret: "hub.secret",
-  topic: "hub.topic",
-  lease: "hub.lease",
-  channelType: "hub.channel.type",
-  channelEndpoint: "hub.channel.endpoint"
-};
-
-const SubscriptionMode = {
-  subscribe: "subscribe",
-  unsubscribe: "unsubscribe"
-};
-
-const EventType = {
-  OpenPatientChart: "open-patient-chart",
-  SwitchPatientChart: "switch-patient-chart",
-  ClosePatientChart: "close-patient-chart",
-  OpenImagingStudy: "open-imaging-study",
-  SwitchImagingStudy: "switch-imaging-study",
-  CloseImagingStudy: "close-imaging-study",
-  LogoutUser: "logout-user",
-  HibernateUser: "hibernate-user"
-};
+import { SubscriptionParams, SubscriptionMode, EventType } from "../types";
+import {
+  DEFAULT_SECRET,
+  DEFAULT_TOPIC,
+  DEFAULT_LEASE,
+  WEBSOCKET_CHANNEL_TYPE
+} from "../constants";
 
 const INITIAL_SUB = {
   [SubscriptionParams.events]: [
     EventType.OpenPatientChart,
     EventType.ClosePatientChart
   ],
-  [SubscriptionParams.secret]: "secret",
-  [SubscriptionParams.topic]: "DrXRay",
-  [SubscriptionParams.lease]: 999,
-  [SubscriptionParams.channelType]: "websocket"
+  [SubscriptionParams.secret]: DEFAULT_SECRET,
+  [SubscriptionParams.topic]: DEFAULT_TOPIC,
+  [SubscriptionParams.lease]: DEFAULT_LEASE,
+  [SubscriptionParams.channelType]: WEBSOCKET_CHANNEL_TYPE
 };
 
 const isSuccess = response =>

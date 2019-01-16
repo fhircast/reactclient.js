@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import uuid from "uuid";
 
 const Status = {
   NotConnected: "NotConnected",
@@ -67,6 +68,23 @@ const closeWebsocket = ({ setStatus }) => {
   setStatus(Status.NotConnected);
 };
 
+const publishEvent = () => {
+  if (!ws) {
+    return;
+  }
+
+  const msg = {
+    timestamp: new Date().toJSON(),
+    id: uuid.v4(),
+    event: {
+      "hub.topic": "DrXRay",
+      "hub.event": "open-patient-chart",
+      context: []
+    }
+  };
+  ws.send(JSON.stringify(msg));
+};
+
 export default function WebsocketStatus({
   websocketUrl,
   endpoint,
@@ -110,6 +128,8 @@ export default function WebsocketStatus({
     return status === Status.Connecting ? "Connecting..." : "Not connected";
   };
 
+  const handleClick = () => publishEvent();
+
   const bgColor = STATUS_BG_COLORS[status];
   return (
     <div className="fc-card">
@@ -117,6 +137,9 @@ export default function WebsocketStatus({
         <div className="card-header">Websocket</div>
         <div className="card-body">
           <p>{getStatusText()}</p>
+          <button className="btn btn-primary" onClick={handleClick}>
+            Publish event
+          </button>
         </div>
       </div>
     </div>
