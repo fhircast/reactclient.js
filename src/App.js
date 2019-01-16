@@ -58,11 +58,11 @@ export default function App() {
     setEvents(prevEvents => [evt, ...prevEvents]);
   };
 
-  const handleWsConnect = () => {
+  const handleWsBound = () => {
     setIsWsConnected(true);
   };
 
-  const handleWsDisconnect = () => {
+  const handleWsUnbound = () => {
     setIsWsConnected(false);
     setEvents([]);
   };
@@ -107,8 +107,8 @@ export default function App() {
             endpoint={WS_ENDPOINT}
             connect={hasSubscriptions()}
             onEvent={evt => handleEvent(evt)}
-            onConnect={handleWsConnect}
-            onDisconnect={handleWsDisconnect}
+            onBound={handleWsBound}
+            onUnbound={handleWsUnbound}
           />
         </div>
         <div className="col-md top-buffer">

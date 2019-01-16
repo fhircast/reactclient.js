@@ -1,4 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import uuid from "uuid";
+import { WebsocketStatus } from "../types";
 
 const WAIT_INTERVAL = 500;
 const ENTER_KEY = 13;
@@ -60,4 +62,116 @@ export const useSelect = ({ initialValue, onChange = null } = {}) => {
     setValue,
     onChange: handleChange
   };
+};
+
+export const useWebsocket = ({ url, onMessage, onOpen, onClose }) => {
+  const wsRef = useRef();
+  const [status, setStatus] = useState(WebsocketStatus.Closed);
+
+  const call = (cb, ...args) => {
+    if (cb) {
+      cb(...args);
+    }
+  };
+
+  const open = () => {
+    if (wsRef.current) {
+      close();
+    }
+
+    setStatus(WebsocketStatus.Opening);
+
+    wsRef.current = new WebSocket(url);
+    wsRef.current.onopen = e => {
+      setStatus(WebsocketStatus.Open);
+      call(onOpen, e);
+    };
+    wsRef.current.onmessage = e => call(onMessage, e);
+    wsRef.current.onclose = () => close();
+  };
+
+  const close = () => {
+    if (wsRef.current) {
+      wsRef.current.close();
+      wsRef.current = null;
+    }
+
+    setStatus(WebsocketStatus.Closed);
+    call(onClose);
+  };
+
+  const send = message => {
+    if (!wsRef.current) {
+      return;
+    }
+
+    wsRef.current.send(message);
+  };
+
+  return { status, open, close, send };
+};
+
+export const useFhircastWebsocket = ({
+  url,
+  endpoint,
+  connect,
+  onBind,
+  onUnbind,
+  onEvent
+}) => {
+  const [isBound, setIsBound] = useState(false);
+  const { status, open, close, send } = useWebsocket({
+    url: `${url}/${endpoint}`,
+    onMessage: e => handleMessage(e),
+    onClose: onUnbind
+  });
+
+  useEffect(
+    () => {
+      if (connect) {
+        open();
+      } else {
+        doClose();
+      }
+
+      return () => doClose();
+    },
+    [url, endpoint, connect]
+  );
+
+  const doClose = () => {
+    setIsBound(false);
+    close();
+
+    if (onUnbind) {
+      onUnbind();
+    }
+  };
+
+  const handleMessage = e => {
+    const data = JSON.parse(e.data);
+
+    if (data.bound) {
+      setIsBound(true);
+      if (onBind) {
+        onBind(endpoint);
+      }
+      return;
+    }
+
+    if (onEvent) {
+      onEvent(data.event);
+    }
+  };
+
+  const publishEvent = evt => {
+    const msg = {
+      timestamp: new Date().toJSON(),
+      id: uuid.v4(),
+      event: evt
+    };
+    send(JSON.stringify(msg));
+  };
+
+  return { status, isBound, publishEvent };
 };
