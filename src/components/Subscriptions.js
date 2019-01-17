@@ -39,7 +39,7 @@ function SubRow({ sub }) {
   );
 }
 
-export default function Subscription(props) {
+export default function Subscriptions(props) {
   const [sub, setSub] = useState(INITIAL_SUB);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
@@ -116,7 +116,7 @@ export default function Subscription(props) {
   return (
     <div className="fc-card">
       <div className="card">
-        <h5 className="card-header">Subscribe</h5>
+        <h5 className="card-header">Subscribe to events</h5>
         <div className="card-body">
           <form className="mb-4" onSubmit={handleSubmit}>
             <FormInput

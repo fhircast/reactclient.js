@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import uuid from "uuid";
 import "./App.css";
 import Urls from "./components/Urls";
-import Subscription from "./components/Subscription";
+import Subscriptions from "./components/Subscriptions";
 import Events from "./components/Events";
 import WebsocketStatus from "./components/WebsocketStatus";
 
@@ -39,7 +39,7 @@ export default function App() {
           />
         </div>
         <div className="col-md top-buffer">
-          <Subscription wsEndpoint={WS_ENDPOINT} />
+          <Subscriptions wsEndpoint={WS_ENDPOINT} />
         </div>
         <div className="col-md top-buffer">
           <Events subs={[]} received={events} />
