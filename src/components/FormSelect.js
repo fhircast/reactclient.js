@@ -17,7 +17,7 @@ export default function FormSelect({
       <label className="col-4 col-form-label" htmlFor={nameNoDots}>
         {name}
       </label>
-      <div className="col-8">
+      <div className="col-8 px-0">
         <ReactSelect
           options={options}
           defaultValue={select.value}
