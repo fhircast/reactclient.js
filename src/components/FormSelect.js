@@ -13,16 +13,20 @@ export default function FormSelect({
   const nameNoDots = name.replace(".", "-");
 
   return (
-    <div className="form-group">
-      <label htmlFor={nameNoDots}>{name}</label>
-      <ReactSelect
-        options={options}
-        defaultValue={select.value}
-        onChange={select.onChange}
-        isMulti={isMulti}
-        id={nameNoDots}
-        name={nameNoDots}
-      />
+    <div className="form-group row">
+      <label className="col-4 col-form-label" htmlFor={nameNoDots}>
+        {name}
+      </label>
+      <div className="col-8">
+        <ReactSelect
+          options={options}
+          defaultValue={select.value}
+          onChange={select.onChange}
+          isMulti={isMulti}
+          id={nameNoDots}
+          name={nameNoDots}
+        />
+      </div>
     </div>
   );
 }

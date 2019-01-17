@@ -7,15 +7,11 @@ import SubList from "./components/SubList";
 import WebsocketStatus from "./components/WebsocketStatus";
 import Events from "./components/Events";
 
-const HUB_URL = "http://localhost:3000/api/hub";
-const CLIENT_URL = "http://localhost:3000/client";
 const WS_URL = "ws://localhost:3000/bind";
 
 const WS_ENDPOINT = uuid.v4();
 
 export default function App() {
-  const [hubUrl, setHubUrl] = useState(HUB_URL);
-  const [clientUrl, setClientUrl] = useState(CLIENT_URL);
   const [subscriptions, setSubscriptions] = useState({});
   const [wsUrl, setWsUrl] = useState(WS_URL);
   const [isWsConnected, setIsWsConnected] = useState(false);
@@ -80,10 +76,6 @@ export default function App() {
       <div className="row">
         <div className="col-md top-buffer">
           <Urls
-            hubUrl={hubUrl}
-            onHubUrlChange={setHubUrl}
-            clientUrl={clientUrl}
-            onClientUrlChange={setClientUrl}
             websocketUrl={wsUrl}
             onWebsocketUrlChange={setWsUrl}
             isReadOnly={isWsConnected}
@@ -91,9 +83,8 @@ export default function App() {
         </div>
         <div className="col-md top-buffer">
           <Subscription
-            hubUrl={hubUrl}
-            clientUrl={clientUrl}
             wsEndpoint={WS_ENDPOINT}
+            areUrlsReadOnly={hasSubscriptions()}
             onSubscribe={handleSub}
             onUnsubscribe={handleUnsub}
           />

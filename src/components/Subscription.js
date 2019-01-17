@@ -4,6 +4,8 @@ import FormSelect from "./FormSelect";
 import { sendSubscription } from "../services/fhircast";
 import { SubscriptionParams, SubscriptionMode, EventType } from "../types";
 import {
+  DEFAULT_HUB_URL,
+  DEFAULT_CLIENT_URL,
   DEFAULT_SECRET,
   DEFAULT_TOPIC,
   DEFAULT_LEASE,
@@ -24,21 +26,11 @@ const INITIAL_SUB = {
 const isSuccess = response =>
   response && response.status >= 200 && response.status < 300;
 
-const SubscriptionStatus = ({ response }) => {
-  if (response === undefined) {
-    return null;
-  }
-
-  const wasSuccessful = isSuccess(response);
-  const alertType = wasSuccessful ? "alert-success" : "alert-danger";
-  const alertText = response ? response.statusText : "Network Error";
-  return <small className={`d-block alert ${alertType}`}>{alertText}</small>;
-};
-
 export default function Subscription(props) {
   const [sub, setSub] = useState(INITIAL_SUB);
-  const [response, setResponse] = useState(undefined);
-  const { hubUrl, clientUrl, wsEndpoint, onSubscribe, onUnsubscribe } = props;
+  const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
+  const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
+  const { wsEndpoint, areUrlsReadOnly, onSubscribe, onUnsubscribe } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -51,8 +43,6 @@ export default function Subscription(props) {
       [SubscriptionParams.mode]: mode,
       [SubscriptionParams.channelEndpoint]: wsEndpoint
     });
-
-    setResponse(newResponse);
 
     if (isSuccess(newResponse)) {
       const callback =
@@ -71,10 +61,22 @@ export default function Subscription(props) {
   return (
     <div className="fc-card">
       <div className="card">
-        <div className="card-header">Subscribe to events</div>
+        <div className="card-header">Subscribe</div>
         <div className="card-body">
           <div className="mb-3">
             <form onSubmit={handleSubmit}>
+              <FormInput
+                name="Hub URL"
+                value={hubUrl}
+                onChange={setHubUrl}
+                isReadOnly={areUrlsReadOnly}
+              />
+              <FormInput
+                name="Client URL"
+                value={clientUrl}
+                onChange={setClientUrl}
+                isReadOnly={areUrlsReadOnly}
+              />
               <FormInput
                 name="Topic"
                 value={sub[SubscriptionParams.topic]}
@@ -94,21 +96,22 @@ export default function Subscription(props) {
                   })
                 }
               />
-              <button
-                className="btn btn-primary mr-1"
-                onClick={() => handleSubscribe(SubscriptionMode.subscribe)}
-              >
-                Subscribe
-              </button>
-              <button
-                className="btn btn-secondary mr-1"
-                onClick={() => handleSubscribe(SubscriptionMode.unsubscribe)}
-              >
-                Unsubscribe
-              </button>
+              <div className="float-right">
+                <button
+                  className="btn btn-primary mr-1"
+                  onClick={() => handleSubscribe(SubscriptionMode.subscribe)}
+                >
+                  Subscribe
+                </button>
+                <button
+                  className="btn btn-secondary mr-1"
+                  onClick={() => handleSubscribe(SubscriptionMode.unsubscribe)}
+                >
+                  Unsubscribe
+                </button>
+              </div>
             </form>
           </div>
-          <SubscriptionStatus response={response} />
         </div>
       </div>
     </div>
