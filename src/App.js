@@ -15,15 +15,15 @@ export default function App() {
     <div className="container-fluid">
       <div className="row">
         <div className="col-md top-buffer">
-          <WebsocketConnection
-            endpoint={WS_ENDPOINT}
-            connect={hasSubcriptions}
-          />
-        </div>
-        <div className="col-md top-buffer">
           <Subscriptions
             wsEndpoint={WS_ENDPOINT}
             onSubscriptionsChange={handleSubscriptionsChange}
+          />
+        </div>
+        <div className="col-md top-buffer">
+          <WebsocketConnection
+            endpoint={WS_ENDPOINT}
+            connect={hasSubcriptions}
           />
         </div>
       </div>

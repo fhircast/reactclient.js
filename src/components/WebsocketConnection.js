@@ -34,7 +34,7 @@ function StatusText({ status, isBound, endpoint }) {
 export default function WebsocketConnection({ endpoint, connect }) {
   const [url, setUrl] = useState(DEFAULT_WS_URL);
   const [receivedEvents, setReceivedEvents] = useState([]);
-  const { status, isBound } = useFhircastWebsocket({
+  const { status, isBound, publishEvent } = useFhircastWebsocket({
     url,
     endpoint,
     connect,
@@ -48,18 +48,18 @@ export default function WebsocketConnection({ endpoint, connect }) {
     e.preventDefault();
   };
 
-  // const handlePublishEvent = () =>
-  //   publishEvent({
-  //     "hub.topic": "DrXRay",
-  //     "hub.event": "open-patient-chart",
-  //     context: []
-  //   });
+  const handlePublishEvent = () =>
+    publishEvent({
+      "hub.topic": "DrXRay",
+      "hub.event": "open-patient-chart",
+      context: []
+    });
 
   const alertType = isBound ? "alert-success" : STATUS_ALERT_TYPE[status];
   return (
     <div>
       <div className="fc-card">
-        <div className={`card h-100`}>
+        <div className="card mb-4">
           <div className={`card-header alert ${alertType} mb-0`}>
             <h5 className="d-inline">Websocket</h5>
             <small className="d-inline float-right">
@@ -82,7 +82,11 @@ export default function WebsocketConnection({ endpoint, connect }) {
           </div>
         </div>
       </div>
-      <Events subs={[]} received={receivedEvents} />
+      <Events
+        received={receivedEvents}
+        onPublishEvent={handlePublishEvent}
+        isPublishAllowed={isBound}
+      />
     </div>
   );
 }
