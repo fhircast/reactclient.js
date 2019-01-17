@@ -17,13 +17,13 @@ export default function FormInput({
   const inputClass = isReadOnly ? "form-control-plaintext" : "form-control";
   return (
     <div className="form-group row">
-      <label className="col-4 col-form-label" htmlFor={nameNoDots}>
+      <label className="col-3 col-form-label" htmlFor={nameNoDots}>
         {name}
       </label>
       <input
         readOnly={isReadOnly}
         type={type}
-        className={`col-8 ${inputClass}`}
+        className={`col-9 ${inputClass}`}
         id={nameNoDots}
         name={nameNoDots}
         value={input.value}

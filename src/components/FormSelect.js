@@ -14,10 +14,10 @@ export default function FormSelect({
 
   return (
     <div className="form-group row">
-      <label className="col-4 col-form-label" htmlFor={nameNoDots}>
+      <label className="col-3 col-form-label" htmlFor={nameNoDots}>
         {name}
       </label>
-      <div className="col-8 px-0">
+      <div className="col-9 px-0">
         <ReactSelect
           options={options}
           defaultValue={select.value}

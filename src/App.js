@@ -1,57 +1,29 @@
 import React, { useState } from "react";
 import uuid from "uuid";
 import "./App.css";
-import Urls from "./components/Urls";
+import WebsocketConnection from "./components/WebsocketConnection";
 import Subscriptions from "./components/Subscriptions";
-import Events from "./components/Events";
-import WebsocketStatus from "./components/WebsocketStatus";
-
-const WS_URL = "ws://localhost:3000/bind";
 
 const WS_ENDPOINT = uuid.v4();
 
 export default function App() {
-  const [wsUrl, setWsUrl] = useState(WS_URL);
-  const [isWsConnected, setIsWsConnected] = useState(false);
-  const [events, setEvents] = useState([]);
+  const [hasSubcriptions, setHasSubcriptions] = useState(false);
 
-  const handleEvent = evt => {
-    setEvents(prevEvents => [evt, ...prevEvents]);
-  };
-
-  const handleWsBound = () => {
-    setIsWsConnected(true);
-  };
-
-  const handleWsUnbound = () => {
-    setIsWsConnected(false);
-    setEvents([]);
-  };
+  const handleSubscriptionsChange = subs => setHasSubcriptions(subs.length > 0);
 
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-md top-buffer">
-          <Urls
-            websocketUrl={wsUrl}
-            onWebsocketUrlChange={setWsUrl}
-            isReadOnly={isWsConnected}
+          <WebsocketConnection
+            endpoint={WS_ENDPOINT}
+            connect={hasSubcriptions}
           />
         </div>
         <div className="col-md top-buffer">
-          <Subscriptions wsEndpoint={WS_ENDPOINT} />
-        </div>
-        <div className="col-md top-buffer">
-          <Events subs={[]} received={events} />
-        </div>
-        <div className="col-md top-buffer">
-          <WebsocketStatus
-            websocketUrl={wsUrl}
-            endpoint={WS_ENDPOINT}
-            connect={false}
-            onEvent={evt => handleEvent(evt)}
-            onBound={handleWsBound}
-            onUnbound={handleWsUnbound}
+          <Subscriptions
+            wsEndpoint={WS_ENDPOINT}
+            onSubscriptionsChange={handleSubscriptionsChange}
           />
         </div>
       </div>

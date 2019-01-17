@@ -44,7 +44,7 @@ export default function Subscriptions(props) {
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
   const [subscriptions, setSubscriptions] = useState({});
-  const { wsEndpoint } = props;
+  const { wsEndpoint, onSubscriptionsChange } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -60,27 +60,34 @@ export default function Subscriptions(props) {
 
     const isSuccess =
       response && response.status >= 200 && response.status < 300;
+    if (!isSuccess) {
+      return;
+    }
 
-    if (isSuccess) {
-      const callback =
-        mode === SubscriptionMode.subscribe ? handleSub : handleUnsub;
-      callback({
-        hubUrl,
-        clientUrl,
-        topic: sub[SubscriptionParams.topic],
-        events: sub[SubscriptionParams.events]
-      });
+    const handleFunc =
+      mode === SubscriptionMode.subscribe ? replaceSub : removeSubEvents;
+    const newSubs = handleFunc({
+      hubUrl,
+      clientUrl,
+      topic: sub[SubscriptionParams.topic],
+      events: sub[SubscriptionParams.events]
+    });
+
+    if (onSubscriptionsChange && newSubs) {
+      onSubscriptionsChange(Object.values(newSubs));
     }
   };
 
   const getSubKey = ({ hubUrl, clientUrl, topic }) =>
     hubUrl + clientUrl + topic;
 
-  const handleSub = sub => {
-    setSubscriptions({ ...subscriptions, [getSubKey(sub)]: sub });
+  const replaceSub = sub => {
+    const subs = { ...subscriptions, [getSubKey(sub)]: sub };
+    setSubscriptions(subs);
+    return subs;
   };
 
-  const handleUnsub = sub => {
+  const removeSubEvents = sub => {
     const subKey = getSubKey(sub);
     const { [subKey]: foundSub, ...restSubs } = subscriptions;
     if (!foundSub) {
@@ -100,10 +107,12 @@ export default function Subscriptions(props) {
       ...foundSub,
       events: remainingEvents
     };
-    setSubscriptions({
+    const subs = {
       ...subscriptions,
       [subKey]: newSub
-    });
+    };
+    setSubscriptions(subs);
+    return subs;
   };
 
   const getSubArray = () => {
