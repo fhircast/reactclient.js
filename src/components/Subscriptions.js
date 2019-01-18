@@ -26,7 +26,7 @@ const INITIAL_SUB = {
 };
 
 export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
-  const [sub, setSub] = useState(INITIAL_SUB);
+  const [subscription, setSubscription] = useState(INITIAL_SUB);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
   const [subscriptions, setSubscriptions] = useState({});
@@ -35,7 +35,7 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
 
   const handleSubscribe = async mode => {
     const response = await sendSubscription(hubUrl, {
-      ...sub,
+      ...subscription,
       [SubscriptionParams.callback]: clientUrl,
       [SubscriptionParams.mode]: mode,
       [SubscriptionParams.channelEndpoint]: wsEndpoint
@@ -52,8 +52,8 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
     const newSubs = handleFunc({
       hubUrl,
       clientUrl,
-      topic: sub[SubscriptionParams.topic],
-      events: sub[SubscriptionParams.events]
+      topic: subscription[SubscriptionParams.topic],
+      events: subscription[SubscriptionParams.events]
     });
 
     if (onSubscriptionsChange && newSubs) {
@@ -104,6 +104,10 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
 
   const hasSubscriptions = Object.keys(subscriptions).length > 0;
 
+  const isButtonDisabled =
+    !hubUrl || !clientUrl || !subscription[SubscriptionParams.topic];
+  const buttonDisabledClass = isButtonDisabled ? "disabled" : "";
+
   return (
     <div>
       <div className="fc-card">
@@ -125,32 +129,37 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
               />
               <FormInput
                 name="Topic"
-                value={sub[SubscriptionParams.topic]}
+                value={subscription[SubscriptionParams.topic]}
                 onChange={value =>
-                  setSub({ ...sub, [SubscriptionParams.topic]: value })
+                  setSubscription({
+                    ...subscription,
+                    [SubscriptionParams.topic]: value
+                  })
                 }
               />
               <FormSelect
                 name="Events"
                 isMulti={true}
                 options={toSelectOptions(Object.values(EventType))}
-                value={toSelectOptions(sub[SubscriptionParams.events])}
+                value={toSelectOptions(subscription[SubscriptionParams.events])}
                 onChange={options =>
-                  setSub({
-                    ...sub,
+                  setSubscription({
+                    ...subscription,
                     [SubscriptionParams.events]: options.map(o => o.value)
                   })
                 }
               />
               <div className="form-group text-right">
                 <button
-                  className="btn btn-primary mr-1"
+                  className={`btn btn-primary mr-1 ${buttonDisabledClass}`}
+                  disabled={isButtonDisabled}
                   onClick={() => handleSubscribe(SubscriptionMode.subscribe)}
                 >
                   Subscribe
                 </button>
                 <button
-                  className="btn btn-secondary mr-1"
+                  className={`btn btn-outline-primary ${buttonDisabledClass}`}
+                  disabled={isButtonDisabled}
                   onClick={() => handleSubscribe(SubscriptionMode.unsubscribe)}
                 >
                   Unsubscribe
