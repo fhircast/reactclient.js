@@ -14,13 +14,13 @@ export default function App() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md top-buffer">
+        <div className="col-md">
           <Subscriptions
             wsEndpoint={WS_ENDPOINT}
             onSubscriptionsChange={handleSubscriptionsChange}
           />
         </div>
-        <div className="col-md top-buffer">
+        <div className="col-md">
           <WebsocketConnection
             endpoint={WS_ENDPOINT}
             connect={hasSubcriptions}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
+import SubscriptionList from "./SubscriptionList";
 import { sendSubscription } from "../services/fhircast";
 import { toSelectOptions } from "../utils";
 import { SubscriptionParams, SubscriptionMode, EventType } from "../types";
@@ -24,28 +25,11 @@ const INITIAL_SUB = {
   [SubscriptionParams.channelType]: WEBSOCKET_CHANNEL_TYPE
 };
 
-function SubRow({ sub }) {
-  const { topic, events } = sub;
-  return (
-    <tr>
-      <td>{topic}</td>
-      <td>
-        {events.map(e => (
-          <span key={e} className="badge badge-pill badge-info">
-            {e}
-          </span>
-        ))}
-      </td>
-    </tr>
-  );
-}
-
-export default function Subscriptions(props) {
+export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
   const [sub, setSub] = useState(INITIAL_SUB);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
   const [subscriptions, setSubscriptions] = useState({});
-  const { wsEndpoint, onSubscriptionsChange } = props;
 
   const handleSubmit = e => e.preventDefault();
 
@@ -121,74 +105,62 @@ export default function Subscriptions(props) {
   const hasSubscriptions = Object.keys(subscriptions).length > 0;
 
   return (
-    <div className="fc-card">
-      <div className="card">
-        <h5 className="card-header">Subscribe to events</h5>
-        <div className="card-body">
-          <form className="mb-4" onSubmit={handleSubmit}>
-            <FormInput
-              name="Hub URL"
-              value={hubUrl}
-              onChange={setHubUrl}
-              isReadOnly={hasSubscriptions}
-            />
-            <FormInput
-              name="Client URL"
-              value={clientUrl}
-              onChange={setClientUrl}
-              isReadOnly={hasSubscriptions}
-            />
-            <FormInput
-              name="Topic"
-              value={sub[SubscriptionParams.topic]}
-              onChange={value =>
-                setSub({ ...sub, [SubscriptionParams.topic]: value })
-              }
-            />
-            <FormSelect
-              name="Events"
-              isMulti={true}
-              options={toSelectOptions(Object.values(EventType))}
-              value={toSelectOptions(sub[SubscriptionParams.events])}
-              onChange={options =>
-                setSub({
-                  ...sub,
-                  [SubscriptionParams.events]: options.map(o => o.value)
-                })
-              }
-            />
-            <div className="form-group text-right">
-              <button
-                className="btn btn-primary mr-1"
-                onClick={() => handleSubscribe(SubscriptionMode.subscribe)}
-              >
-                Subscribe
-              </button>
-              <button
-                className="btn btn-secondary mr-1"
-                onClick={() => handleSubscribe(SubscriptionMode.unsubscribe)}
-              >
-                Unsubscribe
-              </button>
-            </div>
-          </form>
-          <div className="table-responsive-sm">
-            <table className="table table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">Topic</th>
-                  <th scope="col">Events</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getSubArray().map(sub => (
-                  <SubRow key={sub.topic} sub={sub} />
-                ))}
-              </tbody>
-            </table>
+    <div>
+      <div className="fc-card">
+        <div className="card">
+          <h5 className="card-header">Subscribe to events</h5>
+          <div className="card-body">
+            <form className="mb-4" onSubmit={handleSubmit}>
+              <FormInput
+                name="Hub URL"
+                value={hubUrl}
+                onChange={setHubUrl}
+                isReadOnly={hasSubscriptions}
+              />
+              <FormInput
+                name="Client URL"
+                value={clientUrl}
+                onChange={setClientUrl}
+                isReadOnly={hasSubscriptions}
+              />
+              <FormInput
+                name="Topic"
+                value={sub[SubscriptionParams.topic]}
+                onChange={value =>
+                  setSub({ ...sub, [SubscriptionParams.topic]: value })
+                }
+              />
+              <FormSelect
+                name="Events"
+                isMulti={true}
+                options={toSelectOptions(Object.values(EventType))}
+                value={toSelectOptions(sub[SubscriptionParams.events])}
+                onChange={options =>
+                  setSub({
+                    ...sub,
+                    [SubscriptionParams.events]: options.map(o => o.value)
+                  })
+                }
+              />
+              <div className="form-group text-right">
+                <button
+                  className="btn btn-primary mr-1"
+                  onClick={() => handleSubscribe(SubscriptionMode.subscribe)}
+                >
+                  Subscribe
+                </button>
+                <button
+                  className="btn btn-secondary mr-1"
+                  onClick={() => handleSubscribe(SubscriptionMode.unsubscribe)}
+                >
+                  Unsubscribe
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+      <SubscriptionList subs={getSubArray()} />
     </div>
   );
 }

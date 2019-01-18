@@ -53,7 +53,7 @@ export default function WebsocketConnection({ endpoint, connect }) {
   return (
     <div>
       <div className="fc-card">
-        <div className="card mb-4">
+        <div className="card">
           <div className={`card-header alert ${alertType} mb-0`}>
             <h5 className="d-inline">Websocket</h5>
             <small className="d-inline float-right">
