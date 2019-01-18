@@ -16,14 +16,12 @@ function EventRow({ evt, index }) {
   );
 }
 
-export default function Events({ received, isPublishAllowed, onPublishEvent }) {
-  const publishDisabledClass = isPublishAllowed ? "" : "disabled";
+export default function ReceivedEvents({ events }) {
   return (
     <div className="fc-card">
       <div className="card">
-        <h5 className="card-header">Events</h5>
+        <h5 className="card-header">Received events</h5>
         <div className="card-body">
-          <h6 className="card-title">Received</h6>
           <div className="table-responsive-sm">
             <table className="table table-sm">
               <thead>
@@ -33,21 +31,11 @@ export default function Events({ received, isPublishAllowed, onPublishEvent }) {
                 </tr>
               </thead>
               <tbody>
-                {received.map((evt, index) => (
+                {events.map((evt, index) => (
                   <EventRow key={index} evt={evt} index={index} />
                 ))}
               </tbody>
             </table>
-          </div>
-          <hr />
-          <div className="text-right">
-            <button
-              className={`btn btn-primary text-right ${publishDisabledClass}`}
-              onClick={onPublishEvent}
-              disabled={!isPublishAllowed}
-            >
-              Publish
-            </button>
           </div>
         </div>
       </div>

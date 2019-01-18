@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { sendSubscription } from "../services/fhircast";
+import { toSelectOptions } from "../utils";
 import { SubscriptionParams, SubscriptionMode, EventType } from "../types";
 import {
   DEFAULT_HUB_URL,
@@ -46,9 +47,7 @@ export default function Subscriptions(props) {
   const [subscriptions, setSubscriptions] = useState({});
   const { wsEndpoint, onSubscriptionsChange } = props;
 
-  const handleSubmit = e => {
-    e.preventDefault();
-  };
+  const handleSubmit = e => e.preventDefault();
 
   const handleSubscribe = async mode => {
     const response = await sendSubscription(hubUrl, {
@@ -119,7 +118,6 @@ export default function Subscriptions(props) {
     return Object.values(subscriptions).filter(sub => Boolean(sub));
   };
 
-  const toSelectOptions = values => values.map(v => ({ value: v, label: v }));
   const hasSubscriptions = Object.keys(subscriptions).length > 0;
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FormInput from "./FormInput";
-import Events from "./Events";
+import ReceivedEvents from "./ReceivedEvents";
+import PublishEvent from "./PublishEvent";
 import { useFhircastWebsocket } from "../hooks";
 import { WebsocketStatus } from "../types";
 import { DEFAULT_WS_URL } from "../constants";
@@ -48,13 +49,6 @@ export default function WebsocketConnection({ endpoint, connect }) {
     e.preventDefault();
   };
 
-  const handlePublishEvent = () =>
-    publishEvent({
-      "hub.topic": "DrXRay",
-      "hub.event": "open-patient-chart",
-      context: []
-    });
-
   const alertType = isBound ? "alert-success" : STATUS_ALERT_TYPE[status];
   return (
     <div>
@@ -82,11 +76,8 @@ export default function WebsocketConnection({ endpoint, connect }) {
           </div>
         </div>
       </div>
-      <Events
-        received={receivedEvents}
-        onPublishEvent={handlePublishEvent}
-        isPublishAllowed={isBound}
-      />
+      <ReceivedEvents events={receivedEvents} />
+      <PublishEvent isPublishAllowed={isBound} onPublishEvent={publishEvent} />
     </div>
   );
 }
