@@ -83,7 +83,7 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
 
     if (remainingEvents.length === 0) {
       setSubscriptions(restSubs);
-      return;
+      return restSubs;
     }
 
     const newSub = {

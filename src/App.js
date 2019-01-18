@@ -4,26 +4,31 @@ import "./App.css";
 import WebsocketConnection from "./components/WebsocketConnection";
 import Subscriptions from "./components/Subscriptions";
 
-const WS_ENDPOINT = uuid.v4();
-
 export default function App() {
-  const [hasSubcriptions, setHasSubcriptions] = useState(false);
+  const [connectWebsocket, setConnectWebsocket] = useState(false);
+  const [wsEndpoint, setWsEndpoint] = useState(uuid.v4());
 
-  const handleSubscriptionsChange = subs => setHasSubcriptions(subs.length > 0);
+  const handleSubscriptionsChange = subs => {
+    const emptySubs = subs.length === 0;
+    if (emptySubs) {
+      setWsEndpoint(uuid.v4());
+    }
+    setConnectWebsocket(!emptySubs);
+  };
 
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-md">
           <Subscriptions
-            wsEndpoint={WS_ENDPOINT}
+            wsEndpoint={wsEndpoint}
             onSubscriptionsChange={handleSubscriptionsChange}
           />
         </div>
         <div className="col-md">
           <WebsocketConnection
-            endpoint={WS_ENDPOINT}
-            connect={hasSubcriptions}
+            endpoint={wsEndpoint}
+            connect={connectWebsocket}
           />
         </div>
       </div>
