@@ -3,7 +3,7 @@ import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import SubscriptionList from "./SubscriptionList";
 import { sendSubscription } from "../services/fhircast";
-import { toSelectOptions } from "../utils";
+import { toSelectOptions, isSuccessStatus } from "../utils";
 import { SubscriptionParams, SubscriptionMode, EventType } from "../types";
 import {
   DEFAULT_HUB_URL,
@@ -30,6 +30,7 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
   const [subscriptions, setSubscriptions] = useState({});
+  const [error, setError] = useState();
 
   const handleSubmit = e => e.preventDefault();
 
@@ -41,40 +42,52 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
       [SubscriptionParams.channelEndpoint]: wsEndpoint
     });
 
-    const isSuccess =
-      response && response.status >= 200 && response.status < 300;
-    if (!isSuccess) {
+    setError(getError(response));
+
+    const newSubs = getSubscriptions(mode, response);
+    if (!newSubs) {
       return;
     }
 
-    const handleFunc =
-      mode === SubscriptionMode.subscribe ? replaceSub : removeSubEvents;
-    const newSubs = handleFunc({
-      hubUrl,
-      clientUrl,
-      topic: subscription[SubscriptionParams.topic],
-      events: subscription[SubscriptionParams.events]
-    });
+    setSubscriptions(newSubs);
 
-    if (onSubscriptionsChange && newSubs) {
+    if (onSubscriptionsChange) {
       onSubscriptionsChange(Object.values(newSubs));
     }
   };
 
-  const getSubKey = ({ hubUrl, clientUrl, topic }) =>
-    hubUrl + clientUrl + topic;
+  const getError = response => {
+    if (!response) {
+      return "Network error: invalid hub url?";
+    }
 
-  const replaceSub = sub => {
-    const subs = { ...subscriptions, [getSubKey(sub)]: sub };
-    setSubscriptions(subs);
-    return subs;
+    const { status } = response;
+    return isSuccessStatus(status) ? null : `Error status ${status}`;
   };
+
+  const getSubscriptions = (mode, response) => {
+    if (!response || !isSuccessStatus(response.status)) {
+      return null;
+    }
+
+    const sub = {
+      topic: subscription[SubscriptionParams.topic],
+      events: subscription[SubscriptionParams.events]
+    };
+    return mode === SubscriptionMode.subscribe
+      ? addOrUpdateSub(sub)
+      : removeSubEvents(sub);
+  };
+
+  const addOrUpdateSub = sub => ({ ...subscriptions, [getSubKey(sub)]: sub });
 
   const removeSubEvents = sub => {
     const subKey = getSubKey(sub);
     const { [subKey]: foundSub, ...restSubs } = subscriptions;
+
     if (!foundSub) {
-      return;
+      // no changes
+      return null;
     }
 
     const remainingEvents = foundSub.events.filter(
@@ -82,7 +95,7 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
     );
 
     if (remainingEvents.length === 0) {
-      setSubscriptions(restSubs);
+      // no events left, remove the sub
       return restSubs;
     }
 
@@ -90,13 +103,13 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
       ...foundSub,
       events: remainingEvents
     };
-    const subs = {
+    return {
       ...subscriptions,
       [subKey]: newSub
     };
-    setSubscriptions(subs);
-    return subs;
   };
+
+  const getSubKey = ({ topic }) => topic;
 
   const getSubArray = () => {
     return Object.values(subscriptions).filter(sub => Boolean(sub));
@@ -108,11 +121,15 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
     !hubUrl || !clientUrl || !subscription[SubscriptionParams.topic];
   const buttonDisabledClass = isButtonDisabled ? "disabled" : "";
 
+  const alertType = error ? "alert-danger" : "";
   return (
     <div>
       <div className="fc-card">
         <div className="card">
-          <h5 className="card-header">Subscribe to events</h5>
+          <div className={`card-header alert ${alertType}`}>
+            <h5 className="d-inline">Subscribe to events</h5>
+            <small className="d-inline float-right">{error}</small>
+          </div>
           <div className="card-body">
             <form className="mb-4" onSubmit={handleSubmit}>
               <FormInput
