@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import uuid from "uuid";
 import "./App.css";
+import Header from "./components/Header";
 import WebsocketConnection from "./components/WebsocketConnection";
 import Subscriptions from "./components/Subscriptions";
 
@@ -17,19 +18,22 @@ export default function App() {
   };
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-md">
-          <Subscriptions
-            wsEndpoint={wsEndpoint}
-            onSubscriptionsChange={handleSubscriptionsChange}
-          />
-        </div>
-        <div className="col-md">
-          <WebsocketConnection
-            endpoint={wsEndpoint}
-            connect={connectWebsocket}
-          />
+    <div>
+      <Header />
+      <div className="container-fluid mx-auto w-100 cover-container">
+        <div className="row">
+          <div className="col-lg mx-auto">
+            <Subscriptions
+              wsEndpoint={wsEndpoint}
+              onSubscriptionsChange={handleSubscriptionsChange}
+            />
+          </div>
+          <div className="col-lg mx-auto">
+            <WebsocketConnection
+              endpoint={wsEndpoint}
+              connect={connectWebsocket}
+            />
+          </div>
         </div>
       </div>
     </div>
