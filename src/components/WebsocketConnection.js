@@ -43,8 +43,8 @@ function WebsocketConnection({ endpoint, connect }) {
     onEvent: evt => handleEvent(evt)
   });
 
-  const handleEvent = evt =>
-    setReceivedEvents(prevEvents => [evt, ...prevEvents]);
+  const handleEvent = eventMsg =>
+    setReceivedEvents(prevEvents => [eventMsg, ...prevEvents]);
 
   const handleSubmit = e => {
     e.preventDefault();

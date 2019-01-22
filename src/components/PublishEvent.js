@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import uuid from "uuid";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
@@ -16,6 +17,7 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
   );
   const [contextError, setContextError] = useState();
   const [topic, setTopic] = useState(DEFAULT_TOPIC);
+  const [previousId, setPreviousId] = useState();
 
   const validateContextJson = context => {
     try {
@@ -44,7 +46,10 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
       [EVENT_EVENT]: eventName,
       context: JSON.parse(contextString)
     };
-    onPublishEvent(evt);
+
+    const id = uuid.v4();
+    setPreviousId(id);
+    onPublishEvent(evt, id);
   };
 
   const handleContextChange = e => {
@@ -94,6 +99,15 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
               Publish
             </button>
           </div>
+        </div>
+        <div className="card-footer">
+          {previousId ? (
+            <small className="text-success">
+              Published event with ID <strong>{previousId}</strong>
+            </small>
+          ) : (
+            <div>&nbsp;</div>
+          )}
         </div>
       </div>
     </div>

@@ -160,14 +160,14 @@ export const useFhircastWebsocket = ({
     }
 
     if (onEvent) {
-      onEvent(data.event);
+      onEvent(data);
     }
   };
 
-  const publishEvent = evt => {
+  const publishEvent = (evt, id = null) => {
     const msg = {
       timestamp: new Date().toJSON(),
-      id: uuid.v4(),
+      id: id || uuid.v4(),
       event: evt
     };
     send(JSON.stringify(msg));

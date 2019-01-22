@@ -7,10 +7,11 @@ const EVENT_TOPIC = "hub.topic";
 function EventRow({ evt, index }) {
   return (
     <tr>
-      <td>{evt[EVENT_TOPIC]}</td>
+      <td>{evt.id}</td>
+      <td>{evt.event[EVENT_TOPIC]}</td>
       <td>
         <span key={index} className="badge badge-pill badge-info">
-          {evt[EVENT_EVENT]}
+          {evt.event[EVENT_EVENT]}
         </span>
       </td>
     </tr>
@@ -18,6 +19,7 @@ function EventRow({ evt, index }) {
 }
 
 function ReceivedEvents({ events }) {
+  const latestEvent = events.length > 0 ? events[0] : null;
   return (
     <div className="fc-card">
       <div className="card">
@@ -27,6 +29,7 @@ function ReceivedEvents({ events }) {
             <table className="table table-sm">
               <thead>
                 <tr>
+                  <th scope="col">ID</th>
                   <th scope="col">Topic</th>
                   <th scope="col">Event</th>
                 </tr>
@@ -38,6 +41,15 @@ function ReceivedEvents({ events }) {
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="card-footer">
+          {latestEvent ? (
+            <small className="text-success">
+              Received event with ID <strong>{latestEvent.id}</strong>
+            </small>
+          ) : (
+            <div>&nbsp;</div>
+          )}
         </div>
       </div>
     </div>
