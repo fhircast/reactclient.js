@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const EVENT_EVENT = "hub.event";
 const EVENT_TOPIC = "hub.topic";
@@ -16,7 +17,7 @@ function EventRow({ evt, index }) {
   );
 }
 
-export default function ReceivedEvents({ events }) {
+function ReceivedEvents({ events }) {
   return (
     <div className="fc-card">
       <div className="card">
@@ -42,3 +43,9 @@ export default function ReceivedEvents({ events }) {
     </div>
   );
 }
+
+ReceivedEvents.propTypes = {
+  events: PropTypes.array.isRequired
+};
+
+export default ReceivedEvents;

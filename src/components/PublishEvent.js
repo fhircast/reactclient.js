@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
@@ -9,7 +10,7 @@ import { useInput } from "../hooks";
 const EVENT_EVENT = "hub.event";
 const EVENT_TOPIC = "hub.topic";
 
-export default function PublishEvent({ isPublishAllowed, onPublishEvent }) {
+function PublishEvent({ isPublishAllowed, onPublishEvent }) {
   const [eventName, setEventName] = useState(EventType.OpenPatientChart);
   const [contextString, setContextString] = useState(
     JSON.stringify(DEFAULT_CONTEXT, null, 2)
@@ -101,3 +102,10 @@ export default function PublishEvent({ isPublishAllowed, onPublishEvent }) {
     </div>
   );
 }
+
+PublishEvent.propTypes = {
+  isPublishAllowed: PropTypes.bool.isRequired,
+  onPublishEvent: PropTypes.func.isRequired
+};
+
+export default PublishEvent;

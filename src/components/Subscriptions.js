@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import SubscriptionList from "./SubscriptionList";
@@ -25,7 +26,7 @@ const INITIAL_SUB = {
   [SubscriptionParams.channelType]: WEBSOCKET_CHANNEL_TYPE
 };
 
-export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
+function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
   const [subscription, setSubscription] = useState(INITIAL_SUB);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
@@ -190,3 +191,10 @@ export default function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
     </div>
   );
 }
+
+Subscriptions.propTypes = {
+  wsEndpoint: PropTypes.string.isRequired,
+  onSubscriptionsChange: PropTypes.func.isRequired
+};
+
+export default Subscriptions;

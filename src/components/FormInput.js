@@ -1,13 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useInput } from "../hooks";
 
-export default function FormInput({
-  name,
-  type = "text",
-  value,
-  onChange,
-  isReadOnly
-}) {
+function FormInput({ name, type = "text", value, onChange, isReadOnly }) {
   const input = useInput({
     initialValue: value,
     onChange
@@ -32,3 +27,13 @@ export default function FormInput({
     </div>
   );
 }
+
+FormInput.propTypes = {
+  name: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["text", "number"]),
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  isReadOnly: PropTypes.bool
+};
+
+export default FormInput;

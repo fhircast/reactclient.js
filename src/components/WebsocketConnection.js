@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import FormInput from "./FormInput";
 import ReceivedEvents from "./ReceivedEvents";
 import PublishEvent from "./PublishEvent";
@@ -32,7 +33,7 @@ function StatusText({ status, isBound, endpoint }) {
   return <span>{STATUS_TEXT[status]}</span>;
 }
 
-export default function WebsocketConnection({ endpoint, connect }) {
+function WebsocketConnection({ endpoint, connect }) {
   const [url, setUrl] = useState(DEFAULT_WS_URL);
   const [receivedEvents, setReceivedEvents] = useState([]);
   const { status, isBound, publishEvent } = useFhircastWebsocket({
@@ -81,3 +82,10 @@ export default function WebsocketConnection({ endpoint, connect }) {
     </div>
   );
 }
+
+WebsocketConnection.propTypes = {
+  endpoint: PropTypes.string.isRequired,
+  connect: PropTypes.bool.isRequired
+};
+
+export default WebsocketConnection;

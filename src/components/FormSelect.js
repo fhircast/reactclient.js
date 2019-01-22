@@ -1,14 +1,9 @@
 import React from "react";
 import ReactSelect from "react-select";
+import PropTypes from "prop-types";
 import { useSelect } from "../hooks";
 
-export default function FormSelect({
-  isMulti,
-  name,
-  options,
-  value,
-  onChange
-}) {
+function FormSelect({ isMulti, name, options, value, onChange }) {
   const select = useSelect({ initialValue: value, onChange });
   const nameNoDots = name.replace(".", "-");
 
@@ -30,3 +25,13 @@ export default function FormSelect({
     </div>
   );
 }
+
+FormSelect.propTypes = {
+  isMulti: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  value: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  onChange: PropTypes.func
+};
+
+export default FormSelect;

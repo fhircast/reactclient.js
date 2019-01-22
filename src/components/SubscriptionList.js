@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function SubRow({ sub }) {
   const { topic, events } = sub;
@@ -16,7 +17,7 @@ function SubRow({ sub }) {
   );
 }
 
-export default function SubscriptionList({ subs }) {
+function SubscriptionList({ subs }) {
   return (
     <div className="fc-card">
       <div className="card">
@@ -42,3 +43,9 @@ export default function SubscriptionList({ subs }) {
     </div>
   );
 }
+
+SubscriptionList.propTypes = {
+  subs: PropTypes.array.isRequired
+};
+
+export default SubscriptionList;
