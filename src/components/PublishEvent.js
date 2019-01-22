@@ -5,7 +5,6 @@ import FormSelect from "./FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
 import { EventType } from "../types";
 import { DEFAULT_TOPIC, DEFAULT_CONTEXT } from "../constants";
-import { useInput } from "../hooks";
 
 const EVENT_EVENT = "hub.event";
 const EVENT_TOPIC = "hub.topic";
@@ -16,9 +15,7 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
     JSON.stringify(DEFAULT_CONTEXT, null, 2)
   );
   const [contextError, setContextError] = useState();
-  const { value: topic, onChange: onTopicChange } = useInput({
-    initialValue: DEFAULT_TOPIC
-  });
+  const [topic, setTopic] = useState(DEFAULT_TOPIC);
 
   const validateContextJson = context => {
     try {
@@ -66,7 +63,7 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
         <h5 className="card-header">Publish event</h5>
         <div className="card-body">
           <form className="mb-1" onSubmit={e => e.preventDefault()}>
-            <FormInput name="Topic" value={topic} onChange={onTopicChange} />
+            <FormInput name="Topic" value={topic} onChange={setTopic} />
             <FormSelect
               name="Event"
               isMulti={false}
