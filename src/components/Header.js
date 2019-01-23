@@ -1,9 +1,13 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+
+const HEADER_TYPE = process.env.REACT_APP_HEADER_TYPE || "dark";
+const HEADER_TYPE_CLASSES = `navbar-${HEADER_TYPE} bg-${HEADER_TYPE}`;
+
 export default function Header() {
   return (
-    <nav className="navbar navbar-dark bg-dark mb-4">
+    <nav className={`navbar ${HEADER_TYPE_CLASSES} mb-4`}>
       <div className="navbar-brand">
         <span role="img" aria-label="fire">
           🔥

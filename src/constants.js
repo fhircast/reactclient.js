@@ -1,6 +1,9 @@
-export const DEFAULT_HUB_URL = "http://localhost:3000/api/hub";
-export const DEFAULT_CLIENT_URL = "http://localhost:3000/client";
-export const DEFAULT_WS_URL = "ws://localhost:3000/bind";
+export const DEFAULT_HUB_URL =
+  process.env.REACT_APP_HUB_URL || "http://localhost:3000/api/hub";
+export const DEFAULT_CLIENT_URL =
+  process.env.REACT_APP_CLIENT_URL || "http://localhost:3000/client";
+export const DEFAULT_WS_URL =
+  process.env.REACT_APP_WEBSOCKET_URL || "ws://localhost:3000/bind";
 
 export const DEFAULT_SECRET = "secret";
 export const DEFAULT_TOPIC = "DrXRay";
