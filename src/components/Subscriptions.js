@@ -26,6 +26,8 @@ const INITIAL_SUB = {
   [SubscriptionParams.channelType]: WEBSOCKET_CHANNEL_TYPE
 };
 
+const SHOW_CLIENT_URL = false;
+
 function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
   const [subscription, setSubscription] = useState(INITIAL_SUB);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
@@ -139,12 +141,15 @@ function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
                 onChange={setHubUrl}
                 isReadOnly={hasSubscriptions}
               />
-              <FormInput
-                name="Client URL"
-                value={clientUrl}
-                onChange={setClientUrl}
-                isReadOnly={hasSubscriptions}
-              />
+              {SHOW_CLIENT_URL ? (
+                <FormInput
+                  h
+                  name="Client URL"
+                  value={clientUrl}
+                  onChange={setClientUrl}
+                  isReadOnly={hasSubscriptions}
+                />
+              ) : null}
               <FormInput
                 name="Topic"
                 value={subscription[SubscriptionParams.topic]}
