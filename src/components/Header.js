@@ -11,14 +11,14 @@ export default function Header() {
         FHIRcast Websocket Demo
       </div>
       <ul className="navbar-nav">
-        <li className="nav-item">
+        <li className="nav-item mx-2">
           <a
             className="nav-link"
             target="_blank"
             rel="noopener noreferrer"
             href="https://github.com/akalliokoski/fhircast-websocket-demo"
           >
-            <FontAwesomeIcon size="lg" icon={faGithub} />
+            <FontAwesomeIcon size="2x" icon={faGithub} />
           </a>
         </li>
       </ul>
