@@ -143,7 +143,6 @@ function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
               />
               {SHOW_CLIENT_URL ? (
                 <FormInput
-                  h
                   name="Client URL"
                   value={clientUrl}
                   onChange={setClientUrl}
