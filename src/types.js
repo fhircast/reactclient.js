@@ -25,7 +25,7 @@ export const EventType = {
   HibernateUser: "hibernate-user"
 };
 
-export const WebsocketStatus = {
+export const WebSocketStatus = {
   Closed: "Closed",
   Opening: "Opening",
   Open: "Open"

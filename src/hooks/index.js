@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import uuid from "uuid";
-import { WebsocketStatus } from "../types";
+import { WebSocketStatus } from "../types";
 
 const WAIT_INTERVAL = 500;
 const ENTER_KEY = 13;
@@ -64,9 +64,9 @@ export const useSelect = ({ initialValue, onChange = null } = {}) => {
   };
 };
 
-export const useWebsocket = ({ url, onMessage, onOpen, onClose }) => {
+export const useWebSocket = ({ url, onMessage, onOpen, onClose }) => {
   const wsRef = useRef();
-  const [status, setStatus] = useState(WebsocketStatus.Closed);
+  const [status, setStatus] = useState(WebSocketStatus.Closed);
 
   const call = (cb, ...args) => {
     if (cb) {
@@ -79,11 +79,11 @@ export const useWebsocket = ({ url, onMessage, onOpen, onClose }) => {
       close();
     }
 
-    setStatus(WebsocketStatus.Opening);
+    setStatus(WebSocketStatus.Opening);
 
     wsRef.current = new WebSocket(url);
     wsRef.current.onopen = e => {
-      setStatus(WebsocketStatus.Open);
+      setStatus(WebSocketStatus.Open);
       call(onOpen, e);
     };
     wsRef.current.onmessage = e => call(onMessage, e);
@@ -96,7 +96,7 @@ export const useWebsocket = ({ url, onMessage, onOpen, onClose }) => {
       wsRef.current = null;
     }
 
-    setStatus(WebsocketStatus.Closed);
+    setStatus(WebSocketStatus.Closed);
     call(onClose);
   };
 
@@ -111,7 +111,7 @@ export const useWebsocket = ({ url, onMessage, onOpen, onClose }) => {
   return { status, open, close, send };
 };
 
-export const useFhircastWebsocket = ({
+export const useFhircastWebSocket = ({
   url,
   endpoint,
   connect,
@@ -120,7 +120,7 @@ export const useFhircastWebsocket = ({
   onEvent
 }) => {
   const [isBound, setIsBound] = useState(false);
-  const { status, open, close, send } = useWebsocket({
+  const { status, open, close, send } = useWebSocket({
     url: `${url}/${endpoint}`,
     onMessage: e => handleMessage(e),
     onClose: onUnbind

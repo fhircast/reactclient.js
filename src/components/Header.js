@@ -12,7 +12,7 @@ export default function Header() {
         <span role="img" aria-label="fire">
           🔥
         </span>{" "}
-        FHIRcast Websocket Demo
+        FHIRcast WebSocket Demo
       </div>
       <ul className="navbar-nav">
         <li className="nav-item mx-2">

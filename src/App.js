@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import uuid from "uuid";
 import "./App.css";
 import Header from "./components/Header";
-import WebsocketConnection from "./components/WebsocketConnection";
+import WebSocketConnection from "./components/WebSocketConnection";
 import Subscriptions from "./components/Subscriptions";
 
 export default function App() {
-  const [connectWebsocket, setConnectWebsocket] = useState(false);
+  const [connectWebSocket, setConnectWebSocket] = useState(false);
   const [wsEndpoint, setWsEndpoint] = useState(uuid.v4());
 
   const handleSubscriptionsChange = subs => {
@@ -14,7 +14,7 @@ export default function App() {
     if (emptySubs) {
       setWsEndpoint(uuid.v4());
     }
-    setConnectWebsocket(!emptySubs);
+    setConnectWebSocket(!emptySubs);
   };
 
   return (
@@ -29,9 +29,9 @@ export default function App() {
             />
           </div>
           <div className="col-lg mx-auto">
-            <WebsocketConnection
+            <WebSocketConnection
               endpoint={wsEndpoint}
-              connect={connectWebsocket}
+              connect={connectWebSocket}
             />
           </div>
         </div>
