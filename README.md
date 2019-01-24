@@ -4,7 +4,9 @@ React app for prototyping [FHIRcast](http://fhircast.org/) websocket client. The
 
 NOTE: Uses [React Hooks](https://reactjs.org/docs/hooks-intro.html) which is an upcoming feature, currently in React v16.8.0-alpha.1.
 
-### Online Demo
+![Screen Capture Demo](https://github.com/akalliokoski/fhircast-websocket-demo/blob/master/doc/fhircast-websocket-demo-min.gif)
+
+## Online Demo
 
 | App           | URL                                          | Notes  |
 | ------------- | -------------------------------------------- | ------ |
