@@ -8,6 +8,24 @@ NOTE: Uses [React Hooks](https://reactjs.org/docs/hooks-intro.html) which is an 
 
 ![Screen Capture Demo](https://github.com/akalliokoski/fhircast-websocket-demo/blob/master/doc/fhircast-websocket-demo-min.gif)
 
+## Get started
+
+##### Install yarn
+[yarn](https://yarnpkg.com/lang/en/) is a fast, reliable, and secure dependency management tool. [Installation instructions](https://yarnpkg.com/en/docs/install#mac-stable) for  your particular platform can be found [in the official documentation](https://yarnpkg.com/en/docs/install#mac-stable).
+
+##### Running on localhost:3000
+```
+git clone https://github.com/fhircast/reactclient.js.git
+yarn install
+yarn start
+```
+
+##### Running two clients on different ports
+```
+PORT=3006 yarn start
+PORT=3007 yarn start
+```
+
 ## Online Demo
 
 | App      | URL                                         | Notes                                                                                                               |
