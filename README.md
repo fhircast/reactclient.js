@@ -4,8 +4,6 @@ Experimental implementation of [FHIRcast](http://fhircast.org/) WebSocket client
 
 The implementation is based on the WebSocket channel proposal described in [FHIRcast sandbox](https://github.com/fhircast/sandbox.js).
 
-NOTE: Uses [React Hooks](https://reactjs.org/docs/hooks-intro.html) which is an upcoming feature, currently in React v16.8.0-alpha.1.
-
 ![Screen Capture Demo](https://github.com/akalliokoski/fhircast-websocket-demo/blob/master/doc/fhircast-websocket-demo-min.gif)
 
 ## Get started
