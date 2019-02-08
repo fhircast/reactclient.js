@@ -37,7 +37,7 @@ Button.propTypes = {
   className: PropTypes.string,
   text: PropTypes.string,
   isDisabled: PropTypes.bool,
-  isLoading: PropTypes.isLoading,
+  isLoading: PropTypes.bool,
   loadingText: PropTypes.string,
   onClick: PropTypes.func
 };
