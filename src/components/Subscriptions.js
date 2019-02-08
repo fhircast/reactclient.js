@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Button from "./Button";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import SubscriptionList from "./SubscriptionList";
@@ -14,6 +15,12 @@ import {
   DEFAULT_LEASE,
   WEBSOCKET_CHANNEL_TYPE
 } from "../constants";
+
+const SubscriptionStatus = {
+  Idle: "Idle",
+  Unsubscribing: "Unsubscribing",
+  Subscribing: "Subscribing"
+};
 
 const INITIAL_SUB = {
   [SubscriptionParams.events]: [
@@ -34,10 +41,17 @@ function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
   const [clientUrl, setClientUrl] = useState(DEFAULT_CLIENT_URL);
   const [subscriptions, setSubscriptions] = useState({});
   const [error, setError] = useState();
+  const [status, setStatus] = useState(SubscriptionStatus.Idle);
 
   const handleSubmit = e => e.preventDefault();
 
   const handleSubscribe = async mode => {
+    setStatus(
+      mode === SubscriptionMode.subscribe
+        ? SubscriptionStatus.Subscribing
+        : SubscriptionStatus.Unsubscribing
+    );
+
     const response = await sendSubscription(hubUrl, {
       ...subscription,
       [SubscriptionParams.callback]: clientUrl,
@@ -46,6 +60,7 @@ function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
     });
 
     setError(getError(response));
+    setStatus(SubscriptionStatus.Idle);
 
     const newSubs = getSubscriptions(mode, response);
     if (!newSubs) {
@@ -121,8 +136,10 @@ function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
   const hasSubscriptions = Object.keys(subscriptions).length > 0;
 
   const isButtonDisabled =
-    !hubUrl || !clientUrl || !subscription[SubscriptionParams.topic];
-  const buttonDisabledClass = isButtonDisabled ? "disabled" : "";
+    !hubUrl ||
+    !clientUrl ||
+    !subscription[SubscriptionParams.topic] ||
+    status !== SubscriptionStatus.Idle;
 
   const alertType = error ? "alert-danger" : "";
   return (
@@ -172,20 +189,22 @@ function Subscriptions({ wsEndpoint, onSubscriptionsChange }) {
                 }
               />
               <div className="form-group text-right">
-                <button
-                  className={`btn btn-primary mr-1 ${buttonDisabledClass}`}
-                  disabled={isButtonDisabled}
+                <Button
+                  className="btn-primary mr-1"
+                  text="Subscribe"
+                  loadingText="Subscribing..."
+                  isDisabled={isButtonDisabled}
+                  isLoading={status === SubscriptionStatus.Subscribing}
                   onClick={() => handleSubscribe(SubscriptionMode.subscribe)}
-                >
-                  Subscribe
-                </button>
-                <button
-                  className={`btn btn-outline-primary ${buttonDisabledClass}`}
-                  disabled={isButtonDisabled}
+                />
+                <Button
+                  className="btn-outline-primary"
+                  text="Unsubscribe"
+                  loadingText="Unsubscribing..."
+                  isDisabled={isButtonDisabled}
+                  isLoading={status === SubscriptionStatus.Unsubscribing}
                   onClick={() => handleSubscribe(SubscriptionMode.unsubscribe)}
-                >
-                  Unsubscribe
-                </button>
+                />
               </div>
             </form>
           </div>
