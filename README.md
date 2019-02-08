@@ -1,6 +1,6 @@
 # reactclient.js
 
-Experimental implementation of [FHIRcast](http://fhircast.org/) WebSocket client in React.
+[FHIRcast](http://fhircast.org/) WebSocket client prototype in React.
 
 The implementation is based on the WebSocket channel proposal described in [FHIRcast sandbox](https://github.com/fhircast/sandbox.js).
 
