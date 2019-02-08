@@ -7,7 +7,7 @@ const HEADER_TYPE_CLASSES = `navbar-${HEADER_TYPE} bg-${HEADER_TYPE}`;
 
 export default function Header() {
   return (
-    <nav className={`navbar ${HEADER_TYPE_CLASSES} mb-4`}>
+    <nav className={`navbar ${HEADER_TYPE_CLASSES} mb-4 border-bottom`}>
       <div className="navbar-brand">
         <span role="img" aria-label="fire">
           🔥
