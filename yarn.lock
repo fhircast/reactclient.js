@@ -2398,6 +2398,10 @@ css-selector-tokenizer@^0.7.0:
     fastparse "^1.1.1"
     regexpu-core "^1.0.0"
 
+css-supports@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/css-supports/-/css-supports-0.1.1.tgz#9ae201f952beb65f00c5e4b249ebce8ef58a013d"
+
 css-tree@1.0.0-alpha.28:
   version "1.0.0-alpha.28"
   resolved "https://registry.yarnpkg.com/css-tree/-/css-tree-1.0.0-alpha.28.tgz#8e8968190d886c9477bc8d61e96f61af3f7ffa7f"
@@ -7112,6 +7116,13 @@ react-select@^2.2.0:
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
 
+react-sticky-fill@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/react-sticky-fill/-/react-sticky-fill-0.8.4.tgz#8870a71b1c356b5caf2c451ff0010fdfa0de6111"
+  dependencies:
+    css-supports "^0.1.1"
+    stickyfill "^1.1.1"
+
 react-transition-group@^2.2.1, react-transition-group@^2.3.1:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.5.2.tgz#9457166a9ba6ce697a3e1b076b3c049b9fb2c408"
@@ -7905,6 +7916,10 @@ statuses@~1.4.0:
 stealthy-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
+
+stickyfill@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/stickyfill/-/stickyfill-1.1.1.tgz#39413fee9d025c74a7e59ceecb23784cc0f17f02"
 
 stream-browserify@^2.0.1:
   version "2.0.1"

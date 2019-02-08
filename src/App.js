@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Sticky from "react-sticky-fill";
 import uuid from "uuid";
 import "./App.css";
 import Header from "./components/Header";
@@ -19,7 +20,9 @@ export default function App() {
 
   return (
     <div>
-      <Header />
+      <Sticky>
+        <Header />
+      </Sticky>
       <div className="container-fluid mx-auto w-100 cover-container">
         <div className="row">
           <div className="col-lg mx-auto">
