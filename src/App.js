@@ -10,12 +10,14 @@ import Topic from "./components/Topic";
 
 import { DEFAULT_HUB_URL, DEFAULT_CONTEXT } from "./constants";
 
+
 export default function App() {
   const [connectWebSocket, setConnectWebSocket] = useState(false);
   const [wsEndpoint, setWsEndpoint] = useState(uuid.v4());
   const [context /*setContext*/] = useState(DEFAULT_CONTEXT);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [topic, setTopic] = useState(null);
+  const [isTopicLoading, setIsLoadingTopic] = useState(false);
 
   // const handleSubscriptionsChange = subs => {
   //   const emptySubs = subs.length === 0;
@@ -25,9 +27,30 @@ export default function App() {
   //   setConnectWebSocket(!emptySubs);
   // };
 
-  const handleTopicChange = newTopic => {
-    setTopic(newTopic);
+  const handleTopicRequested = async (username, secret) => {
+    if (!await updateTopic()) {
+      return;
+    }
+
+
   };
+
+  const updateTopic = async () => {
+    setIsLoadingTopic(true);
+
+    // TODO: fetch from hub
+    const newTopic = "1A3DF21C-1451-4DC5-8B59-3F824D3A7ED7";
+    setTopic(newTopic);
+
+    await new Promise(resolve => {
+      setTimeout(resolve(), 2000);
+    });
+
+    // setError();
+
+    setIsLoadingTopic(false);
+    return true;
+  }
 
   return (
     <div>
@@ -40,8 +63,9 @@ export default function App() {
             <Topic
               hubUrl={hubUrl}
               topic={topic}
+              isLoading={isTopicLoading}
               onHubUrlChange={setHubUrl}
-              onTopicChange={handleTopicChange}
+              onTopicRequested={handleTopicRequested}
             />
             <Context context={context} />
             <DicomContext />

@@ -3,35 +3,18 @@ import PropTypes from "prop-types";
 import FormInput from "./FormInput";
 import Button from "./Button";
 
-function Topic({ hubUrl, topic, onHubUrlChange, onTopicChange }) {
+function Topic({ hubUrl, topic, isLoading, onHubUrlChange, onTopicRequested }) {
   const [username, setUsername] = useState("joe");
   const [secret, setSecret] = useState("EF25A906-1C48-4E87-AC1F-0E483666AAEEB");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error] = useState(null);
 
   const handleSubmit = e => e.preventDefault();
 
-  const handleGetTopic = async () => {
-    setIsLoading(true);
-
-    // TODO: fetch from hub
-    const newTopic = "1A3DF21C-1451-4DC5-8B59-3F824D3A7ED7";
-
-    await new Promise(resolve => {
-      setTimeout(resolve(), 2000);
-    });
-
-    // setError();
-
-    setIsLoading(false);
-
-    onTopicChange(newTopic);
-    return newTopic;
+  const handleGetTopic = () => {
+    onTopicRequested(username, secret);
   };
 
   const hasTopic = Boolean(topic);
-  const hasError = Boolean(error);
-  const alertType = hasTopic ? "alert-success" : hasError ? "alert-error" : "";
+  const alertType = hasTopic ? "alert-success" : "";
 
   return (
     <div className="fc-card">
@@ -80,7 +63,7 @@ function Topic({ hubUrl, topic, onHubUrlChange, onTopicChange }) {
 Topic.propTypes = {
   baseUrl: PropTypes.string,
   topic: PropTypes.string,
-  onTopicChange: PropTypes.func
+  onTopicRequested: PropTypes.func
 };
 
 export default Topic;
