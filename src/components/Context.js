@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import ReactJson from "react-json-view";
 
-import { DEFAULT_CONTEXT } from "../constants";
-
 const shouldNodeCollapse = ({ namespace }) => {
   return namespace.length > 3;
 };
@@ -16,7 +14,7 @@ function Context({ context } = {}) {
         <div className="card-body">
           <div className="overflow-auto">
             <ReactJson
-              src={DEFAULT_CONTEXT}
+              src={context}
               name={false}
               shouldCollapse={shouldNodeCollapse}
             />
@@ -25,6 +23,10 @@ function Context({ context } = {}) {
       </div>
     </div>
   );
+}
+
+Context.propTypes = {
+  context: PropTypes.object
 }
 
 export default Context;

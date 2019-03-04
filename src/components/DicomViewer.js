@@ -16,26 +16,23 @@ dwv.image.decoderScripts = {
   "jpeg-baseline": "assets/dwv/decoders/pdfjs/decode-jpegbaseline.js"
 };
 
-function useDwv() {
-  const dwvRef = useRef(null);
-
+function useDwv(urls) {
+  const dwvAppRef = useRef(new dwv.App());
+  
   useEffect(() => {
-    const app = new dwv.App();
-    app.init({
-      containerDivId: "dwv",
-      isMobile: true
-    });
+    dwvAppRef.current.loadURLs(urls);
+  }, [urls]);
 
-    app.loadURLs([
-      "https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm"
-    ]);
-  }, []);
+  dwvAppRef.current.init({
+    containerDivId: "dwv",
+    isMobile: true
+  });
 
-  return dwvRef;
+  return dwvAppRef.current;
 }
 
-function DicomViewer() {
-  useDwv();
+function DicomViewer({ urls } = {}) {
+  useDwv(urls);
 
   return (
     <div className="imageViewer">
@@ -46,6 +43,10 @@ function DicomViewer() {
       </div>
     </div>
   );
+}
+
+DicomViewer.propTypes = {
+  urls: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default DicomViewer;

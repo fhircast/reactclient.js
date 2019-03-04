@@ -7,10 +7,15 @@ import WebSocketConnection from "./components/WebSocketConnection";
 import Subscriptions from "./components/Subscriptions";
 import Context from "./components/Context";
 import DicomContext from "./components/DicomContext";
+import Topic from "./components/Topic";
+
+import { DEFAULT_CONTEXT } from "./constants";
 
 export default function App() {
   const [connectWebSocket, setConnectWebSocket] = useState(false);
   const [wsEndpoint, setWsEndpoint] = useState(uuid.v4());
+  const [context, /*setContext*/] = useState(DEFAULT_CONTEXT);
+  const [topic, setTopic] = useState(null);
 
   const handleSubscriptionsChange = subs => {
     const emptySubs = subs.length === 0;
@@ -20,6 +25,10 @@ export default function App() {
     setConnectWebSocket(!emptySubs);
   };
 
+  const handleTopicChange = newTopic => {
+    setTopic(newTopic);
+  }
+
   return (
     <div>
       <Sticky>
@@ -28,7 +37,8 @@ export default function App() {
       <div className="container-fluid mx-auto w-100 cover-container">
         <div className="row">
           <div className="col-lg mx-auto">
-            <Context />
+            <Topic topic={topic} onTopicChange={handleTopicChange} />
+            <Context context={context} />
             <DicomContext />
             <Subscriptions
               wsEndpoint={wsEndpoint}
