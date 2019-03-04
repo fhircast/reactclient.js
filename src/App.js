@@ -4,7 +4,6 @@ import uuid from "uuid";
 import "./App.css";
 import Header from "./components/Header";
 import WebSocketConnection from "./components/WebSocketConnection";
-import Subscriptions from "./components/Subscriptions";
 import Context from "./components/Context";
 import DicomContext from "./components/DicomContext";
 import Topic from "./components/Topic";
@@ -18,13 +17,13 @@ export default function App() {
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [topic, setTopic] = useState(null);
 
-  const handleSubscriptionsChange = subs => {
-    const emptySubs = subs.length === 0;
-    if (emptySubs) {
-      setWsEndpoint(uuid.v4());
-    }
-    setConnectWebSocket(!emptySubs);
-  };
+  // const handleSubscriptionsChange = subs => {
+  //   const emptySubs = subs.length === 0;
+  //   if (emptySubs) {
+  //     setWsEndpoint(uuid.v4());
+  //   }
+  //   setConnectWebSocket(!emptySubs);
+  // };
 
   const handleTopicChange = newTopic => {
     setTopic(newTopic);
@@ -46,10 +45,6 @@ export default function App() {
             />
             <Context context={context} />
             <DicomContext />
-            <Subscriptions
-              wsEndpoint={wsEndpoint}
-              onSubscriptionsChange={handleSubscriptionsChange}
-            />
           </div>
           <div className="col-lg mx-auto">
             <WebSocketConnection

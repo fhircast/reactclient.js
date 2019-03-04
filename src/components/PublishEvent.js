@@ -1,42 +1,26 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import ReactJson from "react-json-view";
 import uuid from "uuid";
-import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
 import { EventType } from "../types";
-import { DEFAULT_TOPIC, DEFAULT_CONTEXT } from "../constants";
+import { DEFAULT_CONTEXT } from "../constants";
 
 const EVENT_EVENT = "hub.event";
 const EVENT_TOPIC = "hub.topic";
 
-function PublishEvent({ isPublishAllowed, onPublishEvent }) {
-  const [eventName, setEventName] = useState(EventType.OpenPatientChart);
-  const [contextString, setContextString] = useState(
-    JSON.stringify(DEFAULT_CONTEXT, null, 2)
-  );
+const shouldNodeCollapse = ({ namespace }) => {
+  return namespace.length > 2;
+};
+
+function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
+  const [eventName, setEventName] = useState(Object.values(EventType)[0]);
+  const [context, setContext] = useState(DEFAULT_CONTEXT);
   const [contextError, setContextError] = useState();
-  const [topic, setTopic] = useState(DEFAULT_TOPIC);
   const [previousId, setPreviousId] = useState();
 
-  const validateContextJson = context => {
-    try {
-      const parsedContext = JSON.parse(context);
-      const isArray = Array.isArray(parsedContext);
-      const err = isArray ? null : "Context should be an array";
-      setContextError(err);
-      return isArray;
-    } catch (e) {
-      setContextError("Invalid JSON");
-      return false;
-    }
-  };
-
   const handlePublishEvent = () => {
-    if (!validateContextJson(contextString)) {
-      return;
-    }
-
     if (!onPublishEvent) {
       return;
     }
@@ -44,7 +28,7 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
     const evt = {
       [EVENT_TOPIC]: topic,
       [EVENT_EVENT]: eventName,
-      context: JSON.parse(contextString)
+      context
     };
 
     const id = uuid.v4();
@@ -52,14 +36,14 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
     onPublishEvent(evt, id);
   };
 
-  const handleContextChange = e => {
-    const value = e.target.value;
-    setContextString(value);
-    validateContextJson(value);
+  const handleContextEdit = ({ updated_src }) => {
+    setContext(updated_src);
+
+    let error = Array.isArray(updated_src) ? null : "Context should be an array"
+    setContextError(error);
   };
 
   const isContextInvalid = Boolean(contextError);
-  const contextValidClass = isContextInvalid ? "is-invalid" : "is-valid";
   const isPublishDisabled = !isPublishAllowed || isContextInvalid;
   const publishDisabledClass = isPublishDisabled ? "disabled" : "";
   return (
@@ -68,7 +52,6 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
         <h5 className="card-header">Publish event</h5>
         <div className="card-body">
           <form className="mb-1" onSubmit={e => e.preventDefault()}>
-            <FormInput name="Topic" value={topic} onChange={setTopic} />
             <FormSelect
               name="Event"
               isMulti={false}
@@ -77,18 +60,16 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
               onChange={option => setEventName(option.value)}
             />
             <label htmlFor="context-textarea">Context</label>
-            <textarea
-              className={`form-control ${contextValidClass}`}
-              id="context-textarea"
-              rows="6"
-              value={contextString}
-              onChange={handleContextChange}
-            />
-            {contextError ? (
-              <div className="invalid-feedback">{contextError}</div>
-            ) : (
-              <small className="text-success">Valid JSON</small>
-            )}
+            <div className="overflow-auto">
+              <ReactJson
+                src={context}
+                name={false}
+                shouldCollapse={shouldNodeCollapse}
+                onEdit={handleContextEdit}
+                onAdd={handleContextEdit}
+                onDelete={handleContextEdit}
+              />
+            </div>
           </form>
           <div className="text-right">
             <button
@@ -115,6 +96,7 @@ function PublishEvent({ isPublishAllowed, onPublishEvent }) {
 }
 
 PublishEvent.propTypes = {
+  topic: PropTypes.string.isRequired,
   isPublishAllowed: PropTypes.bool.isRequired,
   onPublishEvent: PropTypes.func.isRequired
 };

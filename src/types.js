@@ -15,14 +15,14 @@ export const SubscriptionMode = {
 };
 
 export const EventType = {
-  OpenPatientChart: "open-patient-chart",
-  SwitchPatientChart: "switch-patient-chart",
-  ClosePatientChart: "close-patient-chart",
+  // OpenPatientChart: "open-patient-chart",
+  // SwitchPatientChart: "switch-patient-chart",
+  // ClosePatientChart: "close-patient-chart",
   OpenImagingStudy: "open-imaging-study",
   SwitchImagingStudy: "switch-imaging-study",
   CloseImagingStudy: "close-imaging-study",
   LogoutUser: "logout-user",
-  HibernateUser: "hibernate-user"
+  // HibernateUser: "hibernate-user"
 };
 
 export const WebSocketStatus = {
