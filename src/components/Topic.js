@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import FormInput from "./FormInput";
 import Button from "./Button";
 
-function Topic({ baseUrl, topic, onTopicChange }) {
+function Topic({ hubUrl, topic, onHubUrlChange, onTopicChange }) {
   const [username, setUsername] = useState("joe");
   const [secret, setSecret] = useState("EF25A906-1C48-4E87-AC1F-0E483666AAEEB");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,17 +31,23 @@ function Topic({ baseUrl, topic, onTopicChange }) {
 
   const hasTopic = Boolean(topic);
   const hasError = Boolean(error);
-  const alertType = hasTopic ? "alert-success" : (hasError ? "alert-error" : "");
+  const alertType = hasTopic ? "alert-success" : hasError ? "alert-error" : "";
 
   return (
     <div className="fc-card">
       <div className="card">
         <div className={`card-header alert ${alertType}`}>
           <h5 className="d-inline">Topic</h5>
-          <small className="d-inline float-right" >{topic}</small>
+          <small className="d-inline float-right">{topic}</small>
         </div>
         <div className="card-body">
-          <form className="mb-4" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              name="Hub URL"
+              value={hubUrl}
+              onChange={onHubUrlChange}
+              isReadOnly={hasTopic}
+            />
             <FormInput
               name="Username"
               value={username}
