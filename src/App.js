@@ -41,13 +41,7 @@ export default function App() {
     // TODO: fetch from hub
     const newTopic = "1A3DF21C-1451-4DC5-8B59-3F824D3A7ED7";
     setTopic(newTopic);
-
-    await new Promise(resolve => {
-      setTimeout(resolve(), 2000);
-    });
-
-    // setError();
-
+    
     setIsLoadingTopic(false);
     return true;
   }

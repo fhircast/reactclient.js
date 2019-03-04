@@ -26,7 +26,7 @@ function Context({ context } = {}) {
 }
 
 Context.propTypes = {
-  context: PropTypes.object
+  context: PropTypes.array
 }
 
 export default Context;
