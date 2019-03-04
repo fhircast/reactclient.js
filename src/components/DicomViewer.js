@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import "./ImageViewer.css";
+import "./DicomViewer.css";
 import dwv from "dwv";
 
 dwv.utils.decodeQuery = dwv.utils.base.decodeQuery;
@@ -34,7 +34,7 @@ function useDwv() {
   return dwvRef;
 }
 
-function ImageViewer() {
+function DicomViewer() {
   useDwv();
 
   return (
@@ -48,4 +48,4 @@ function ImageViewer() {
   );
 }
 
-export default ImageViewer;
+export default DicomViewer;

@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import WebSocketConnection from "./components/WebSocketConnection";
 import Subscriptions from "./components/Subscriptions";
 import Context from "./components/Context";
+import DicomContext from "./components/DicomContext";
 
 export default function App() {
   const [connectWebSocket, setConnectWebSocket] = useState(false);
@@ -28,6 +29,7 @@ export default function App() {
         <div className="row">
           <div className="col-lg mx-auto">
             <Context />
+            <DicomContext />
             <Subscriptions
               wsEndpoint={wsEndpoint}
               onSubscriptionsChange={handleSubscriptionsChange}
