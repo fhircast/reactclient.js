@@ -5,7 +5,7 @@ import "./App.css";
 import Header from "./components/Header";
 import WebSocketConnection from "./components/WebSocketConnection";
 import Subscriptions from "./components/Subscriptions";
-import ImageViewer from "./components/ImageViewer";
+import Context from "./components/Context";
 
 export default function App() {
   const [connectWebSocket, setConnectWebSocket] = useState(false);
@@ -27,7 +27,7 @@ export default function App() {
       <div className="container-fluid mx-auto w-100 cover-container">
         <div className="row">
           <div className="col-lg mx-auto">
-            <ImageViewer />
+            <Context />
             <Subscriptions
               wsEndpoint={wsEndpoint}
               onSubscriptionsChange={handleSubscriptionsChange}
