@@ -12,7 +12,7 @@ const getDcmUrls = (context) => {
 
 const isContext = ctx => Array.isArray(ctx) && ctx.length > 0;
 
-function DicomContext({ context } = {}) {
+function ImagingStudy({ context } = {}) {
   const urls = getDcmUrls(context);
   const hasUrls = urls.length > 0;
   return (
@@ -27,8 +27,8 @@ function DicomContext({ context } = {}) {
   );
 }
 
-DicomContext.propTypes = {
+ImagingStudy.propTypes = {
   context: PropTypes.array
 }
 
-export default DicomContext;
+export default ImagingStudy;

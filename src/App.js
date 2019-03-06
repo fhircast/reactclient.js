@@ -4,7 +4,7 @@ import "./App.css";
 import Header from "./components/Header";
 import WebSocketConnection from "./components/WebSocketConnection";
 import Context from "./components/Context";
-import DicomContext from "./components/DicomContext";
+import ImagingStudy from "./components/ImagingStudy";
 import Topic from "./components/Topic";
 
 import { useFhircastWebSocket } from "./hooks";
@@ -88,7 +88,7 @@ export default function App() {
               onSecretChange={setSecret}
               onTopicRequested={handleTopicRequested}
             />
-            <DicomContext context={context} />
+            <ImagingStudy context={context} />
             <Context context={context} />
           </div>
           <div className="col-lg mx-auto">
