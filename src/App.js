@@ -14,7 +14,7 @@ import {
   EMPTY_CONTEXT,
   EVENT_TYPES
 } from "./constants";
-import { SubscriptionMode, WebSocketStatus } from "./types";
+import { SubscriptionMode } from "./types";
 import { createSubscriptionJson } from "./utils";
 
 export default function App() {
@@ -88,8 +88,8 @@ export default function App() {
               onSecretChange={setSecret}
               onTopicRequested={handleTopicRequested}
             />
-            <Context context={context} />
             <DicomContext context={context} />
+            <Context context={context} />
           </div>
           <div className="col-lg mx-auto">
             <WebSocketConnection websocket={websocket} topic={topic} />

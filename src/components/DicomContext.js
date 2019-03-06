@@ -18,7 +18,7 @@ function DicomContext({ context } = {}) {
   return (
     <div className="fc-card">
       <div className="card">
-        <h5 className="card-header">DICOM Context</h5>
+        <h5 className="card-header">Imaging study</h5>
         <div className="card-body">
           {hasUrls ? <DicomViewer urls={urls} /> : null} 
         </div>

@@ -11,7 +11,7 @@ function TopicFooter({ subscribedEvents }) {
   return (
     <div>
       <small>Subscribed to </small>
-      <br /> 
+      <br />
       {subscribedEvents.map(e => (
         <span key={e} className="badge badge-pill badge-info">
           {e}
@@ -47,40 +47,40 @@ function Topic({
       <div className="card">
         <div className={`card-header alert ${alertType}`}>
           <h5 className="d-inline">Topic</h5>
-          <small className="d-inline float-right">{topic}</small>
+          <small><strong className="d-inline float-right">{topic}</strong></small>
         </div>
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            <FormInput
-              name="Hub URL"
-              value={hubUrl}
-              onChange={onHubUrlChange}
-              isReadOnly={hasTopic}
-            />
-            <FormInput
-              name="Username"
-              value={username}
-              onChange={setUsername}
-              isReadOnly={hasTopic}
-            />
-            <FormInput
-              name="Secret"
-              value={secret}
-              onChange={onSecretChange}
-              isReadOnly={hasTopic}
-            />
-            <div className="form-group text-right">
-              <Button
-                className="btn-primary mr-1"
-                text="Get Topic"
-                loadingText="Getting topic..."
-                isDisabled={hasTopic}
-                isLoading={isLoading}
-                onClick={handleGetTopic}
+            <form onSubmit={handleSubmit}>
+              <FormInput
+                name="Hub URL"
+                value={hubUrl}
+                onChange={onHubUrlChange}
+                isReadOnly={hasTopic}
               />
-            </div>
-          </form>
-        </div>
+              <FormInput
+                name="Username"
+                value={username}
+                onChange={setUsername}
+                isReadOnly={hasTopic}
+              />
+              <FormInput
+                name="Secret"
+                value={secret}
+                onChange={onSecretChange}
+                isReadOnly={hasTopic}
+              />
+              <div className="form-group text-right">
+                <Button
+                  className="btn-primary mr-1"
+                  text="Get Topic"
+                  loadingText="Getting topic..."
+                  isDisabled={hasTopic}
+                  isLoading={isLoading}
+                  onClick={handleGetTopic}
+                />
+              </div>
+            </form>
+          </div>
         <div className="card-footer">
           <TopicFooter subscribedEvents={subscribedEvents} />
         </div>

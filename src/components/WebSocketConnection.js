@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import PublishEvent from "./PublishEvent";
 import { WebSocketStatus } from "../types";
 
@@ -32,7 +31,7 @@ function StatusText({ status, isBound, topic }) {
 }
 
 function WebSocketConnection({ websocket, topic }) {
-  const { status, isBound } = websocket;
+  const { status, isBound, publishEvent } = websocket;
   
   // const alertType = isBound ? "alert-success" : STATUS_ALERT_TYPE[status];
   console.warn("Fix WebSocketConnection alert type");
@@ -56,14 +55,9 @@ function WebSocketConnection({ websocket, topic }) {
           </div>
         </div>
       </div>
-      {/* <PublishEvent isPublishAllowed={isBound} onPublishEvent={publishEvent} /> */}
+      <PublishEvent topic={topic} isPublishAllowed={isBound} onPublishEvent={publishEvent} />
     </div>
   );
 }
-
-WebSocketConnection.propTypes = {
-  endpoint: PropTypes.string.isRequired,
-  connect: PropTypes.bool.isRequired
-};
 
 export default WebSocketConnection;

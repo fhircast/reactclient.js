@@ -4,44 +4,17 @@ import ReactJson from "react-json-view";
 import uuid from "uuid";
 import FormSelect from "./FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
-import { EventType, WebSocketStatus } from "../types";
-import { DEFAULT_CONTEXT } from "../constants";
+import { DEFAULT_CONTEXT, EVENT_TYPES } from "../constants";
 
 const EVENT_EVENT = "hub.event";
 const EVENT_TOPIC = "hub.topic";
-
-const STATUS_ALERT_TYPE = {
-  [WebSocketStatus.Closed]: "",
-  [WebSocketStatus.Opening]: "alert-info",
-  [WebSocketStatus.Open]: "alert-info"
-};
-
-const STATUS_TEXT = {
-  [WebSocketStatus.Closed]: "Closed",
-  [WebSocketStatus.Opening]: "Opening...",
-  [WebSocketStatus.Open]: "Waiting for confirmation..."
-};
 
 const shouldNodeCollapse = ({ namespace }) => {
   return namespace.length > 2;
 };
 
-function StatusText({ status, isBound, endpoint }) {
-  if (isBound) {
-    return (
-      <span>
-        Bound to
-        <br />
-        <strong>{endpoint}</strong>
-      </span>
-    );
-  }
-
-  return <span>{STATUS_TEXT[status]}</span>;
-}
-
 function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
-  const [eventName, setEventName] = useState(Object.values(EventType)[0]);
+  const [eventName, setEventName] = useState(EVENT_TYPES[0]);
   const [context, setContext] = useState(DEFAULT_CONTEXT);
   const [contextError, setContextError] = useState();
   const [previousId, setPreviousId] = useState();
@@ -81,7 +54,7 @@ function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
             <FormSelect
               name="Event"
               isMulti={false}
-              options={toSelectOptions(Object.values(EventType))}
+              options={toSelectOptions(EVENT_TYPES)}
               value={toSelectOption(eventName)}
               onChange={option => setEventName(option.value)}
             />
@@ -122,7 +95,6 @@ function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
 }
 
 PublishEvent.propTypes = {
-  topic: PropTypes.string.isRequired,
   isPublishAllowed: PropTypes.bool.isRequired,
   onPublishEvent: PropTypes.func.isRequired
 };
