@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useInput } from "../hooks";
+import { useInput } from "../../hooks";
 
 function FormInput({ name, type = "text", value, onChange, isReadOnly }) {
   const input = useInput({

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Button from "./Button";
-import FormInput from "./FormInput";
-import FormSelect from "./FormSelect";
+import Button from "../Form/Button";
+import FormInput from "../Form/FormInput";
+import FormSelect from "../Form/FormSelect";
 import SubscriptionList from "./SubscriptionList";
-import { sendSubscription } from "../services/fhircast";
-import { toSelectOptions, isSuccessStatus } from "../utils";
-import { SubscriptionParams, SubscriptionMode, EventType } from "../types";
+import { sendSubscription } from "../../services/fhircast";
+import { toSelectOptions, isSuccessStatus } from "../../utils";
+import { SubscriptionParams, SubscriptionMode, EventType } from "../../types";
 import {
   DEFAULT_HUB_URL,
   DEFAULT_CLIENT_URL,
@@ -14,7 +14,7 @@ import {
   DEFAULT_TOPIC,
   DEFAULT_LEASE,
   WEBSOCKET_CHANNEL_TYPE
-} from "../constants";
+} from "../../constants";
 
 const SubscriptionStatus = {
   Idle: "Idle",

@@ -42,9 +42,9 @@ function WebSocketConnection({ websocket, topic }) {
     publishEvent(evt, id);
   };
 
-  // const alertType = isBound ? "alert-success" : STATUS_ALERT_TYPE[status];
   console.warn("Fix WebSocketConnection alert type");
   const alertType = topic ? "alert-success" : STATUS_ALERT_TYPE[status];
+  // const alertType = isBound ? "alert-success" : STATUS_ALERT_TYPE[status];
   return (
     <div>
       <div className="fc-card">

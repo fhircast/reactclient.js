@@ -1,7 +1,7 @@
 import React from "react";
 import ReactSelect from "react-select";
 import PropTypes from "prop-types";
-import { useSelect } from "../hooks";
+import { useSelect } from "../../hooks";
 
 function FormSelect({ isMulti, name, options, value, onChange }) {
   const select = useSelect({ initialValue: value, onChange });

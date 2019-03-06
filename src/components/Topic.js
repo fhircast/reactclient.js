@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import FormInput from "./FormInput";
-import Button from "./Button";
+import FormInput from "./Form/FormInput";
+import Button from "./Form/Button";
 
 function TopicFooter({ subscribedEvents }) {
   if (!Array.isArray(subscribedEvents) || subscribedEvents.length === 0) {

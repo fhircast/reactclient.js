@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ReactJson from "react-json-view";
 import uuid from "uuid";
-import FormSelect from "./FormSelect";
+import FormSelect from "./Form/FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
 import { DEFAULT_CONTEXT, EVENT_TYPES } from "../constants";
 
@@ -45,7 +45,6 @@ function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
   const isContextInvalid = Boolean(contextError);
   const isPublishDisabled = !isPublishAllowed || isContextInvalid;
   const publishDisabledClass = isPublishDisabled ? "disabled" : "";
-  console.log(topic, isPublishAllowed, isPublishDisabled)
   return (
     <div >
       <form className="mb-1" onSubmit={e => e.preventDefault()}>
