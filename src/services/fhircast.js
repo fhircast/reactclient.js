@@ -17,15 +17,3 @@ export async function sendSubscription(url, subscription) {
     return error.status ? error : null;
   }
 }
-
-export async function getHubStatus(url) {
-  console.log(url);
-  try {
-    const response = await axios.post(`${url}/status`);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-}

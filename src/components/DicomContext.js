@@ -3,10 +3,14 @@ import PropTypes from "prop-types";
 import DicomViewer from "./DicomViewer";
 
 const getDcmUrls = (context) => {
+  if (!Array.isArray(context) || context.length === 0) {
+    return [];
+  }
+
   return ["https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm"];
 }
 
-function Context({ context } = {}) {
+function DicomContext({ context } = {}) {
   const urls = getDcmUrls(context);
   return (
     <div className="fc-card">
@@ -20,9 +24,8 @@ function Context({ context } = {}) {
   );
 }
 
-Context.propTypes = {
-  context: PropTypes.object
+DicomContext.propTypes = {
+  context: PropTypes.array
 }
 
-
-export default Context;
+export default DicomContext;

@@ -20,6 +20,9 @@ function useDwv(urls) {
   const dwvAppRef = useRef(new dwv.App());
   
   useEffect(() => {
+    if (!Array.isArray(urls) || urls.length === 0) {
+      return;
+    }
     dwvAppRef.current.loadURLs(urls);
   }, [urls]);
 

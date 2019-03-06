@@ -8,13 +8,12 @@ import Context from "./components/Context";
 import DicomContext from "./components/DicomContext";
 import Topic from "./components/Topic";
 
-import { DEFAULT_HUB_URL, DEFAULT_CONTEXT } from "./constants";
-
+import { DEFAULT_HUB_URL, DEFAULT_CONTEXT, EMPTY_CONTEXT } from "./constants";
 
 export default function App() {
   const [connectWebSocket, setConnectWebSocket] = useState(false);
   const [wsEndpoint, setWsEndpoint] = useState(uuid.v4());
-  const [context /*setContext*/] = useState(DEFAULT_CONTEXT);
+  const [context, setContext] = useState(EMPTY_CONTEXT);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [topic, setTopic] = useState(null);
   const [isTopicLoading, setIsLoadingTopic] = useState(false);
@@ -28,11 +27,10 @@ export default function App() {
   // };
 
   const handleTopicRequested = async (username, secret) => {
-    if (!await updateTopic()) {
-      return;
-    }
-
-
+    await updateTopic();
+    await subscribeToEvents();
+    await establishWebSocketConnection();
+    await updateContext();
   };
 
   const updateTopic = async () => {
@@ -41,9 +39,22 @@ export default function App() {
     // TODO: fetch from hub
     const newTopic = "1A3DF21C-1451-4DC5-8B59-3F824D3A7ED7";
     setTopic(newTopic);
-    
+
     setIsLoadingTopic(false);
     return true;
+  }
+
+  const subscribeToEvents = async () => {
+    // TODO
+  }
+
+  const establishWebSocketConnection = async () => {
+    // TODO
+  }
+
+  const updateContext = async () => {
+    // TODO
+    setContext(DEFAULT_CONTEXT);
   }
 
   return (
@@ -62,7 +73,7 @@ export default function App() {
               onTopicRequested={handleTopicRequested}
             />
             <Context context={context} />
-            <DicomContext />
+            <DicomContext context={context} />
           </div>
           <div className="col-lg mx-auto">
             <WebSocketConnection

@@ -10,6 +10,8 @@ export const DEFAULT_TOPIC = "DrXRay";
 export const DEFAULT_LEASE = 999;
 export const WEBSOCKET_CHANNEL_TYPE = "websocket";
 
+export const EMPTY_CONTEXT = [];
+
 export const DEFAULT_CONTEXT = [
   {
     key: "patient",
