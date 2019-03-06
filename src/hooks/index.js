@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import uuid from "uuid";
 import { WebSocketStatus } from "../types";
 
@@ -112,32 +112,18 @@ export const useWebSocket = ({ url, onMessage, onOpen, onClose }) => {
 };
 
 export const useFhircastWebSocket = ({
-  url,
-  endpoint,
-  connect,
+  hubUrl,
+  topic,
   onBind,
   onUnbind,
   onEvent
 }) => {
   const [isBound, setIsBound] = useState(false);
   const { status, open, close, send } = useWebSocket({
-    url: `${url}/${endpoint}`,
+    url: `${hubUrl}/${topic}`,
     onMessage: e => handleMessage(e),
     onClose: onUnbind
   });
-
-  useEffect(
-    () => {
-      if (connect) {
-        open();
-      } else {
-        doClose();
-      }
-
-      return () => doClose();
-    },
-    [url, endpoint, connect]
-  );
 
   const doClose = () => {
     setIsBound(false);
@@ -154,7 +140,7 @@ export const useFhircastWebSocket = ({
     if (data.bound) {
       setIsBound(true);
       if (onBind) {
-        onBind(endpoint);
+        onBind(topic);
       }
       return;
     }
@@ -173,5 +159,5 @@ export const useFhircastWebSocket = ({
     send(JSON.stringify(msg));
   };
 
-  return { status, isBound, publishEvent };
+  return { status, isBound, open, close: doClose, publishEvent };
 };

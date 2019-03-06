@@ -1,5 +1,5 @@
 import { WEBSOCKET_CHANNEL_TYPE } from "./constants";
-import { SubscriptionParams, SubscriptionMode, EventType } from "./types";
+import { SubscriptionParams } from "./types";
 
 export const toSelectOption = value => ({ value, label: value });
 

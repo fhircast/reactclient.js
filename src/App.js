@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Sticky from "react-sticky-fill";
-import uuid from "uuid";
 import "./App.css";
 import Header from "./components/Header";
 import WebSocketConnection from "./components/WebSocketConnection";
@@ -8,35 +7,29 @@ import Context from "./components/Context";
 import DicomContext from "./components/DicomContext";
 import Topic from "./components/Topic";
 
-import { DEFAULT_HUB_URL, DEFAULT_CONTEXT, EMPTY_CONTEXT } from "./constants";
-import { SubscriptionMode, EventType } from "./types";
+import { useFhircastWebSocket } from "./hooks";
+import {
+  DEFAULT_HUB_URL,
+  DEFAULT_CONTEXT,
+  EMPTY_CONTEXT,
+  EVENT_TYPES
+} from "./constants";
+import { SubscriptionMode, WebSocketStatus } from "./types";
 import { createSubscriptionJson } from "./utils";
 
-const EVENT_TYPES = [
-  EventType.OpenImagingStudy,
-  EventType.SwitchImagingStudy,
-  EventType.CloseImagingStudy,
-  EventType.LogoutUser
-];
-
 export default function App() {
-  const [connectWebSocket, setConnectWebSocket] = useState(false);
-  const [wsEndpoint, setWsEndpoint] = useState(uuid.v4());
-  const [context, setContext] = useState(EMPTY_CONTEXT);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
   const [secret, setSecret] = useState("EF25A906-1C48-4E87-AC1F-0E483666AAEEB");
   const [topic, setTopic] = useState(null);
   const [isTopicLoading, setIsLoadingTopic] = useState(false);
+  const [context, setContext] = useState(EMPTY_CONTEXT);
   const [subcribedEvents, setSubscribedEvents] = useState([]);
-  const [receivedEvents, setReceivedEvents] = useState([]);
 
-  // const handleSubscriptionsChange = subs => {
-  //   const emptySubs = subs.length === 0;
-  //   if (emptySubs) {
-  //     setWsEndpoint(uuid.v4());
-  //   }
-  //   setConnectWebSocket(!emptySubs);
-  // };
+  const websocket = useFhircastWebSocket({
+    hubUrl,
+    topic,
+    onEvent: evt => {}
+  });
 
   const handleTopicRequested = async (username, secret) => {
     await updateTopic();
@@ -68,11 +61,12 @@ export default function App() {
   };
 
   const establishWebSocketConnection = async () => {
-    // TODO
+    // TODO: use the actual websocket
+    // websocket.open();
   };
 
   const updateContext = async () => {
-    // TODO
+    // TODO: fetch from hub
     setContext(DEFAULT_CONTEXT);
   };
 
@@ -98,10 +92,7 @@ export default function App() {
             <DicomContext context={context} />
           </div>
           <div className="col-lg mx-auto">
-            <WebSocketConnection
-              endpoint={wsEndpoint}
-              connect={connectWebSocket}
-            />
+            <WebSocketConnection websocket={websocket} topic={topic} />
           </div>
         </div>
       </div>

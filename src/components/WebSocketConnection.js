@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import FormInput from "./FormInput";
-import ReceivedEvents from "./ReceivedEvents";
 import PublishEvent from "./PublishEvent";
-import { useFhircastWebSocket } from "../hooks";
 import { WebSocketStatus } from "../types";
-import { DEFAULT_WS_URL } from "../constants";
 
 const STATUS_ALERT_TYPE = {
   [WebSocketStatus.Closed]: "",
@@ -19,13 +15,15 @@ const STATUS_TEXT = {
   [WebSocketStatus.Open]: "Waiting for confirmation..."
 };
 
-function StatusText({ status, isBound, endpoint }) {
-  if (isBound) {
+function StatusText({ status, isBound, topic }) {
+  // if (isBound) {
+  console.warn("Fix WebSocketConnection StatusText");
+  if (topic) {  
     return (
       <span>
         Bound to
         <br />
-        <strong>{endpoint}</strong>
+        <strong>{topic}</strong>
       </span>
     );
   }
@@ -33,24 +31,12 @@ function StatusText({ status, isBound, endpoint }) {
   return <span>{STATUS_TEXT[status]}</span>;
 }
 
-function WebSocketConnection({ endpoint, connect }) {
-  const [url, setUrl] = useState(DEFAULT_WS_URL);
-  const [receivedEvents, setReceivedEvents] = useState([]);
-  const { status, isBound, publishEvent } = useFhircastWebSocket({
-    url,
-    endpoint,
-    connect,
-    onEvent: evt => handleEvent(evt)
-  });
-
-  const handleEvent = eventMsg =>
-    setReceivedEvents(prevEvents => [eventMsg, ...prevEvents]);
-
-  const handleSubmit = e => {
-    e.preventDefault();
-  };
-
-  const alertType = isBound ? "alert-success" : STATUS_ALERT_TYPE[status];
+function WebSocketConnection({ websocket, topic }) {
+  const { status, isBound } = websocket;
+  
+  // const alertType = isBound ? "alert-success" : STATUS_ALERT_TYPE[status];
+  console.warn("Fix WebSocketConnection alert type");
+  const alertType = topic ? "alert-success" : STATUS_ALERT_TYPE[status];
   return (
     <div>
       <div className="fc-card">
@@ -61,24 +47,16 @@ function WebSocketConnection({ endpoint, connect }) {
               <StatusText
                 status={status}
                 isBound={isBound}
-                endpoint={endpoint}
+                topic={topic}
               />
             </small>
           </div>
           <div className="card-body">
-            <form onSubmit={handleSubmit}>
-              <FormInput
-                name="URL"
-                value={url}
-                onChange={setUrl}
-                isReadOnly={isBound}
-              />
-            </form>
+          
           </div>
         </div>
       </div>
-      <ReceivedEvents events={receivedEvents} />
-      <PublishEvent isPublishAllowed={isBound} onPublishEvent={publishEvent} />
+      {/* <PublishEvent isPublishAllowed={isBound} onPublishEvent={publishEvent} /> */}
     </div>
   );
 }
