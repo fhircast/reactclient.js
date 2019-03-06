@@ -17,3 +17,5 @@ export const createSubscriptionJson = ({ topic, secret, eventTypes, mode }) => {
     [SubscriptionParams.channelType]: WEBSOCKET_CHANNEL_TYPE
   };
 };
+
+export const hasContext = ctx => Array.isArray(ctx) && ctx.length > 0;

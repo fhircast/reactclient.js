@@ -77,7 +77,7 @@ export default function App() {
       </Sticky>
       <div className="container-fluid mx-auto w-100 cover-container">
         <div className="row">
-          <div className="col-xl mx-auto">
+          <div className="col-lg mx-auto">
             <Topic
               hubUrl={hubUrl}
               secret={secret}
@@ -88,13 +88,11 @@ export default function App() {
               onSecretChange={setSecret}
               onTopicRequested={handleTopicRequested}
             />
+            <WebSocketConnection websocket={websocket} topic={topic} />
           </div>
-          <div className="col-xl mx-auto">
+          <div className="col-lg mx-auto">
             <ImagingStudy context={context} />
             <Context context={context} />
-          </div>
-          <div className="col-xl mx-auto">
-            <WebSocketConnection websocket={websocket} topic={topic} />
           </div>
         </div>
       </div>
