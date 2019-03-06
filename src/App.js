@@ -9,14 +9,26 @@ import DicomContext from "./components/DicomContext";
 import Topic from "./components/Topic";
 
 import { DEFAULT_HUB_URL, DEFAULT_CONTEXT, EMPTY_CONTEXT } from "./constants";
+import { SubscriptionMode, EventType } from "./types";
+import { createSubscriptionJson } from "./utils";
+
+const EVENT_TYPES = [
+  EventType.OpenImagingStudy,
+  EventType.SwitchImagingStudy,
+  EventType.CloseImagingStudy,
+  EventType.LogoutUser
+];
 
 export default function App() {
   const [connectWebSocket, setConnectWebSocket] = useState(false);
   const [wsEndpoint, setWsEndpoint] = useState(uuid.v4());
   const [context, setContext] = useState(EMPTY_CONTEXT);
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
+  const [secret, setSecret] = useState("EF25A906-1C48-4E87-AC1F-0E483666AAEEB");
   const [topic, setTopic] = useState(null);
   const [isTopicLoading, setIsLoadingTopic] = useState(false);
+  const [subcribedEvents, setSubscribedEvents] = useState([]);
+  const [receivedEvents, setReceivedEvents] = useState([]);
 
   // const handleSubscriptionsChange = subs => {
   //   const emptySubs = subs.length === 0;
@@ -42,20 +54,27 @@ export default function App() {
 
     setIsLoadingTopic(false);
     return true;
-  }
+  };
 
   const subscribeToEvents = async () => {
-    // TODO
-  }
+    const subJson = createSubscriptionJson({
+      topic,
+      secret,
+      eventTypes: EVENT_TYPES,
+      mode: SubscriptionMode.subscribe
+    });
+    // TODO: POST to hub
+    setSubscribedEvents(EVENT_TYPES);
+  };
 
   const establishWebSocketConnection = async () => {
     // TODO
-  }
+  };
 
   const updateContext = async () => {
     // TODO
     setContext(DEFAULT_CONTEXT);
-  }
+  };
 
   return (
     <div>
@@ -67,9 +86,12 @@ export default function App() {
           <div className="col-lg mx-auto">
             <Topic
               hubUrl={hubUrl}
+              secret={secret}
               topic={topic}
               isLoading={isTopicLoading}
+              subscribedEvents={subcribedEvents}
               onHubUrlChange={setHubUrl}
+              onSecretChange={setSecret}
               onTopicRequested={handleTopicRequested}
             />
             <Context context={context} />

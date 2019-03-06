@@ -3,9 +3,35 @@ import PropTypes from "prop-types";
 import FormInput from "./FormInput";
 import Button from "./Button";
 
-function Topic({ hubUrl, topic, isLoading, onHubUrlChange, onTopicRequested }) {
+function TopicFooter({ subscribedEvents }) {
+  if (!Array.isArray(subscribedEvents) || subscribedEvents.length === 0) {
+    return null;
+  }
+
+  return (
+    <div>
+      <small>Subscribed to </small>
+      <br /> 
+      {subscribedEvents.map(e => (
+        <span key={e} className="badge badge-pill badge-info">
+          {e}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function Topic({
+  hubUrl,
+  topic,
+  secret,
+  isLoading,
+  subscribedEvents,
+  onHubUrlChange,
+  onSecretChange,
+  onTopicRequested
+}) {
   const [username, setUsername] = useState("joe");
-  const [secret, setSecret] = useState("EF25A906-1C48-4E87-AC1F-0E483666AAEEB");
 
   const handleSubmit = e => e.preventDefault();
 
@@ -40,7 +66,7 @@ function Topic({ hubUrl, topic, isLoading, onHubUrlChange, onTopicRequested }) {
             <FormInput
               name="Secret"
               value={secret}
-              onChange={setSecret}
+              onChange={onSecretChange}
               isReadOnly={hasTopic}
             />
             <div className="form-group text-right">
@@ -55,6 +81,9 @@ function Topic({ hubUrl, topic, isLoading, onHubUrlChange, onTopicRequested }) {
             </div>
           </form>
         </div>
+        <div className="card-footer">
+          <TopicFooter subscribedEvents={subscribedEvents} />
+        </div>
       </div>
     </div>
   );
@@ -63,6 +92,7 @@ function Topic({ hubUrl, topic, isLoading, onHubUrlChange, onTopicRequested }) {
 Topic.propTypes = {
   baseUrl: PropTypes.string,
   topic: PropTypes.string,
+  subscribedEvents: PropTypes.arrayOf(PropTypes.string),
   onTopicRequested: PropTypes.func
 };
 
