@@ -9,6 +9,11 @@ export const SubscriptionParams = {
   channelEndpoint: "hub.channel.endpoint"
 };
 
+export const EventParams = {
+  Event: "hub.event",
+  Topic: "hub.topic"
+}
+
 export const SubscriptionMode = {
   subscribe: "subscribe",
   unsubscribe: "unsubscribe"

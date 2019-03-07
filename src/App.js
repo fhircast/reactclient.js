@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Sticky from "react-sticky-fill";
+import uuid from "uuid";
 import "./App.css";
 import Header from "./components/Header";
 import WebSocketConnection from "./components/WebSocketConnection";
@@ -13,7 +14,7 @@ import {
   EMPTY_CONTEXT,
   EVENT_TYPES
 } from "./constants";
-// import { SubscriptionMode } from "./types";
+import { EventParams, EventType } from "./types";
 // import { createSubscriptionJson } from "./utils";
 
 export default function App() {
@@ -38,11 +39,18 @@ export default function App() {
     await updateContext();
   };
 
-  const handlePublishEvent = (evt, id) => {
+  const handlePublishEvent = (evt) => {
     const ctx = evt.context || [];
     setContext(ctx);
-    setSentEventId(id);
-    //websocket.publishEvent(evt, id);
+
+    const eventType = evt[EventParams.Event];
+    if (eventType === EventType.LogoutUser) {
+      setTopic(null);
+    }
+
+    //websocket.publishEvent(evt);
+    const tempEventId = eventType === EventType.LogoutUser ? null : uuid.v4();
+    setSentEventId(tempEventId);
   };
 
   const updateTopic = async () => {

@@ -21,7 +21,7 @@ export const EVENT_TYPES = [
 
 export const EMPTY_CONTEXT = [];
 
-export const DEFAULT_CONTEXT = [
+export const IMAGING_STUDY_CONTEXT = [
   {
     key: "patient",
     resource: {

@@ -1,22 +1,31 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ReactJson from "react-json-view";
-import uuid from "uuid";
 import FormSelect from "./Form/FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
-import { DEFAULT_CONTEXT, EVENT_TYPES } from "../constants";
+import { IMAGING_STUDY_CONTEXT, EMPTY_CONTEXT, EVENT_TYPES } from "../constants";
+import { EventType, EventParams } from "../types";
 
-const EVENT_EVENT = "hub.event";
-const EVENT_TOPIC = "hub.topic";
+const DEFAULT_CONTEXTS = {
+  [EventType.OpenImagingStudy]: IMAGING_STUDY_CONTEXT,
+  [EventType.SwitchImagingStudy]: IMAGING_STUDY_CONTEXT
+}
+
+const getDefaultContext = (eventType) => DEFAULT_CONTEXTS[eventType] || EMPTY_CONTEXT;
 
 const shouldNodeCollapse = ({ namespace }) => {
   return namespace.length > 2;
 };
 
 function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
-  const [eventName, setEventName] = useState(EVENT_TYPES[0]);
-  const [context, setContext] = useState(DEFAULT_CONTEXT);
+  const [eventType, setEventType] = useState(EVENT_TYPES[0]);
+  const [context, setContext] = useState(getDefaultContext(eventType));
   const [contextError, setContextError] = useState();
+
+  const handleEventTypeChange = evt => {
+    setEventType(evt);
+    setContext(getDefaultContext(evt));
+  }
 
   const handlePublishEvent = () => {
     if (!onPublishEvent) {
@@ -24,13 +33,12 @@ function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
     }
 
     const evt = {
-      [EVENT_TOPIC]: topic,
-      [EVENT_EVENT]: eventName,
+      [EventParams.Topic]: topic,
+      [EventParams.Event]: eventType,
       context
     };
 
-    const id = uuid.v4();
-    onPublishEvent(evt, id);
+    onPublishEvent(evt);
   };
 
   const handleContextEdit = ({ updated_src }) => {
@@ -52,8 +60,8 @@ function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
           name="Event"
           isMulti={false}
           options={toSelectOptions(EVENT_TYPES)}
-          value={toSelectOption(eventName)}
-          onChange={option => setEventName(option.value)}
+          value={toSelectOption(eventType)}
+          onChange={option => handleEventTypeChange(option.value)}
         />
         <label htmlFor="context-textarea">Context</label>
         <div className="overflow-auto">
