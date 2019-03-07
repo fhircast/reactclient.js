@@ -6,7 +6,7 @@
 The implementation is based on the WebSocket channel proposal described in [FHIRcast sandbox](https://github.com/fhircast/sandbox.js).
 -->
 
-![Screen Capture Demo](https://github.com/akalliokoski/fhircast-websocket-demo/blob/develop/doc/fhircast-dwv-prototype.gif)
+![Screen Capture Demo](https://github.com/fhircast/reactclient.js/raw/develop/doc/fhircast-dwv-prototype.gif)
 
 <!--
 ## Get started
