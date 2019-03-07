@@ -10,12 +10,11 @@ import Topic from "./components/Topic";
 import { useFhircastWebSocket } from "./hooks";
 import {
   DEFAULT_HUB_URL,
-  DEFAULT_CONTEXT,
   EMPTY_CONTEXT,
   EVENT_TYPES
 } from "./constants";
-import { SubscriptionMode } from "./types";
-import { createSubscriptionJson } from "./utils";
+// import { SubscriptionMode } from "./types";
+// import { createSubscriptionJson } from "./utils";
 
 export default function App() {
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
@@ -24,6 +23,7 @@ export default function App() {
   const [isTopicLoading, setIsLoadingTopic] = useState(false);
   const [context, setContext] = useState(EMPTY_CONTEXT);
   const [subcribedEvents, setSubscribedEvents] = useState([]);
+  const [sentEventId, setSentEventId] = useState();
 
   const websocket = useFhircastWebSocket({
     hubUrl,
@@ -38,6 +38,13 @@ export default function App() {
     await updateContext();
   };
 
+  const handlePublishEvent = (evt, id) => {
+    const ctx = evt.context || [];
+    setContext(ctx);
+    setSentEventId(id);
+    //websocket.publishEvent(evt, id);
+  };
+
   const updateTopic = async () => {
     setIsLoadingTopic(true);
 
@@ -50,12 +57,12 @@ export default function App() {
   };
 
   const subscribeToEvents = async () => {
-    const subJson = createSubscriptionJson({
-      topic,
-      secret,
-      eventTypes: EVENT_TYPES,
-      mode: SubscriptionMode.subscribe
-    });
+    // const subJson = createSubscriptionJson({
+    //   topic,
+    //   secret,
+    //   eventTypes: EVENT_TYPES,
+    //   mode: SubscriptionMode.subscribe
+    // });
     // TODO: POST to hub
     setSubscribedEvents(EVENT_TYPES);
   };
@@ -67,7 +74,7 @@ export default function App() {
 
   const updateContext = async () => {
     // TODO: fetch from hub
-    setContext(DEFAULT_CONTEXT);
+    setContext(EMPTY_CONTEXT);
   };
 
   return (
@@ -88,7 +95,13 @@ export default function App() {
               onSecretChange={setSecret}
               onTopicRequested={handleTopicRequested}
             />
-            <WebSocketConnection websocket={websocket} topic={topic} />
+            <WebSocketConnection
+              status={websocket.status}
+              isBound={websocket.isBound}
+              topic={topic}
+              sentEventId={sentEventId}
+              onPublishEvent={handlePublishEvent}
+            />
           </div>
           <div className="col-lg mx-auto">
             <ImagingStudy context={context} />

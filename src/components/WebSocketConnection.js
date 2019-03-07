@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PublishEvent from "./PublishEvent";
 import { WebSocketStatus } from "../types";
 
@@ -30,16 +30,12 @@ function StatusText({ status, isBound, topic }) {
   return <span>{STATUS_TEXT[status]}</span>;
 }
 
-function WebSocketConnection({ websocket, topic }) {
-  const [previousEventId, setPreviousEventId] = useState();
-
-  const { status, isBound, publishEvent } = websocket;
+function WebSocketConnection({ status, isBound, topic, sentEventId, onPublishEvent }) {
   console.warn("Fix WebSocketConnection isPublishAllowed");
   const isPublishAllowed = Boolean(topic);
 
   const handlePublishEvent = (evt, id) => {
-    setPreviousEventId(id);
-    publishEvent(evt, id);
+    onPublishEvent(evt, id);
   };
 
   console.warn("Fix WebSocketConnection alert type");
@@ -63,9 +59,9 @@ function WebSocketConnection({ websocket, topic }) {
             />
           </div>
           <div className="card-footer">
-            {previousEventId ? (
+            {sentEventId ? (
               <small className="text-success">
-                Published event <strong>{previousEventId}</strong>
+                Published event <strong>{sentEventId}</strong>
               </small>
             ) : (
               <div>&nbsp;</div>
