@@ -10,7 +10,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
     "dwv": "^0.25.2",
-    "eslint-plugin-react-hooks": "^0.0.0",
+    "eslint-plugin-react-hooks": "^1.5.0",
     "prop-types": "^15.6.2",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
