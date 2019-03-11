@@ -1,0 +1,6 @@
+.Toastify__toast--default {
+  background: #cce5ff;
+  color: #004085;
+  border-radius: 0.25rem;
+  cursor: default;
+}

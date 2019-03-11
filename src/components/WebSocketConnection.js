@@ -60,7 +60,7 @@ function WebSocketConnection({ status, isBound, topic, sentEventId, onPublishEve
           </div>
           <div className="card-footer">
             {sentEventId ? (
-              <small className="text-success">
+              <small className="text-primary">
                 Published event <strong>{sentEventId}</strong>
               </small>
             ) : (

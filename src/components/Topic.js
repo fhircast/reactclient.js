@@ -11,7 +11,7 @@ function TopicFooter({ subscribedEvents }) {
   return (
     <div>
       {subscribedEvents.map(e => (
-        <span key={e} className="badge badge-pill badge-info">
+        <span key={e} className="badge badge-pill badge-primary">
           {e}
         </span>
       ))}
