@@ -49,14 +49,23 @@ export default function App() {
 
     //websocket.publishEvent(evt);
     const eventId = uuid.v4();
+    const timestamp = new Date().toJSON();
     setSentEventId(eventId);
 
-    toast(<EventNotification id={eventId} eventType={eventType} context={ctx} />, {
-      className: "eventNotificationWrapper alert alert-primary",
-      bodyClassName: "w-100",
-      position: toast.POSITION.BOTTOM_LEFT,
-      closeButton: false
-    });
+    toast(
+      <EventNotification
+        id={eventId}
+        timestamp={timestamp}
+        eventType={eventType}
+        context={ctx}
+      />,
+      {
+        className: "eventNotificationWrapper alert",
+        bodyClassName: "w-100",
+        position: toast.POSITION.BOTTOM_LEFT,
+        closeButton: false,
+      }
+    );
   };
 
   const updateTopic = async () => {
