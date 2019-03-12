@@ -1,3 +1,7 @@
+.Toastify__toast-container--top-right {
+  top: 4em;
+}
+
 .eventNotificationWrapper {
   background: rgba(255,255,255,.90);
   color: #212529;
