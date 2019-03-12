@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sticky from "react-sticky-fill";
 import uuid from "uuid";
-import { ToastContainer, toast, Slide } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Header from "./components/Header";

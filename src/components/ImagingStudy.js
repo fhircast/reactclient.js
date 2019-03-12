@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DicomViewer from "./DicomViewer";
-import { hasContext } from "../utils";
 
 const getDcmUrls = imagingStudy => {
   if (!imagingStudy) {
