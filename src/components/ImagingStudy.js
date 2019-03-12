@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import DicomViewer from "./DicomViewer";
 import { hasContext } from "../utils";
 
-const getDcmUrls = context => {
-  if (!hasContext(context)) {
+const getDcmUrls = imagingStudy => {
+  if (!imagingStudy) {
     return [];
   }
 
@@ -13,9 +13,8 @@ const getDcmUrls = context => {
   ];
 };
 
-
-function ImagingStudy({ context } = {}) {
-  const urls = getDcmUrls(context);
+function ImagingStudy({ imagingStudy } = {}) {
+  const urls = getDcmUrls(imagingStudy);
   const hasUrls = urls.length > 0;
   const alertType = hasUrls ? "alert-success" : "";
 
@@ -34,7 +33,7 @@ function ImagingStudy({ context } = {}) {
 }
 
 ImagingStudy.propTypes = {
-  context: PropTypes.array
+  imagingStudy: PropTypes.object
 };
 
 export default ImagingStudy;

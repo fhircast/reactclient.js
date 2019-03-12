@@ -14,7 +14,7 @@ import EventNotification from "./components/EventNotification";
 import { useFhircastWebSocket } from "./hooks";
 import { DEFAULT_HUB_URL, EMPTY_CONTEXT, EVENT_TYPES } from "./constants";
 import { EventParams, EventType } from "./types";
-// import { createSubscriptionJson } from "./utils";
+import { findResourceFromContext, /*createSubscriptionJson*/ } from "./utils";
 
 export default function App() {
   const [hubUrl, setHubUrl] = useState(DEFAULT_HUB_URL);
@@ -46,6 +46,7 @@ export default function App() {
     if (eventType === EventType.LogoutUser) {
       setTopic(null);
       setSubscribedEvents([]);
+      setSentEventId();
     }
 
     //websocket.publishEvent(evt);
@@ -101,6 +102,8 @@ export default function App() {
     setContext(EMPTY_CONTEXT);
   };
 
+  const imagingStudy = findResourceFromContext("study", context);
+
   return (
     <div>
       <Sticky>
@@ -108,8 +111,8 @@ export default function App() {
       </Sticky>
       <ToastContainer
         draggable={false}
-        autoClose={false}
-        transition={Slide}
+        autoClose={5000}
+        hideProgressBar={true}
         closeOnClick={false}
       />
       <div className="container-fluid mx-auto w-100 cover-container">
@@ -135,7 +138,7 @@ export default function App() {
             />
           </div>
           <div className="col-lg mx-auto">
-            <ImagingStudy context={context} />
+            <ImagingStudy imagingStudy={imagingStudy} />
             <Context context={context} />
           </div>
         </div>

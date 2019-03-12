@@ -19,3 +19,8 @@ export const createSubscriptionJson = ({ topic, secret, eventTypes, mode }) => {
 };
 
 export const hasContext = ctx => Array.isArray(ctx) && ctx.length > 0;
+
+export const findResourceFromContext = (key, context) => {
+  const element = context.find(c => c.key === key);
+  return element ? element.resource : null;
+}

@@ -4,7 +4,7 @@ import ReactJson from "react-json-view";
 import { hasContext } from "../utils";
 
 const shouldNodeCollapse = ({ namespace }) => {
-  return namespace.length > 3;
+  return namespace.length > 2;
 };
 
 function Context({ context } = {}) {
