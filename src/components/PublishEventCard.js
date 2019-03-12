@@ -1,7 +1,7 @@
 import React from "react";
 import PublishEvent from "./PublishEvent";
 
-function PublishEventCard({ topic, sentEventId, onPublishEvent }) {
+function PublishEventCard({ topic, eventTypes, sentEventId, onPublishEvent }) {
   const handlePublishEvent = (evt, id) => {
     onPublishEvent(evt, id);
   };
@@ -19,6 +19,7 @@ function PublishEventCard({ topic, sentEventId, onPublishEvent }) {
           <div className="card-body">
             <PublishEvent
               topic={topic}
+              eventTypes={eventTypes}
               isPublishAllowed={isPublishAllowed}
               onPublishEvent={handlePublishEvent}
             />

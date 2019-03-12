@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactJson from "react-json-view";
 import FormSelect from "./Form/FormSelect";
 import { toSelectOption, toSelectOptions } from "../utils";
-import { IMAGING_STUDY_CONTEXT, EMPTY_CONTEXT, EVENT_TYPES } from "../constants";
+import { IMAGING_STUDY_CONTEXT, EMPTY_CONTEXT } from "../constants";
 import { EventType, EventParams } from "../types";
 
 const DEFAULT_CONTEXTS = {
@@ -17,8 +17,8 @@ const shouldNodeCollapse = ({ namespace }) => {
   return namespace.length > 2;
 };
 
-function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
-  const [eventType, setEventType] = useState(EVENT_TYPES[0]);
+function PublishEvent({ topic, eventTypes, isPublishAllowed, onPublishEvent }) {
+  const [eventType, setEventType] = useState(eventTypes[0]);
   const [context, setContext] = useState(getDefaultContext(eventType));
   const [contextError, setContextError] = useState();
 
@@ -59,7 +59,7 @@ function PublishEvent({ topic, isPublishAllowed, onPublishEvent }) {
         <FormSelect
           name="Event"
           isMulti={false}
-          options={toSelectOptions(EVENT_TYPES)}
+          options={toSelectOptions(eventTypes)}
           value={toSelectOption(eventType)}
           onChange={option => handleEventTypeChange(option.value)}
         />

@@ -111,7 +111,7 @@ export const useWebSocket = ({ url, onMessage, onOpen, onClose }) => {
   return { status, open, close, send };
 };
 
-export const useFhircastWebSocket = ({
+export const useFhirCastWebSocket = ({
   hubUrl,
   topic,
   onBind,
@@ -162,3 +162,31 @@ export const useFhircastWebSocket = ({
 
   return { status, isBound, open, close: doClose, publishEvent };
 };
+
+
+export const useFhirCast = ({ hubUrl, eventTypes, onEvent }) => {
+  const [topic, setTopic] = useState();
+  const [context, setContext] = useState([]);
+  const websocket = useFhirCastWebSocket({ hubUrl, topic, onEvent });
+
+  const connect = async (username, secret) => {
+    // get topic
+    // subscribe to events
+    // get context
+    // connect websocket
+  }
+
+  const publishEvent = async evt => {
+    // TODO
+  }
+
+  return {
+    topic,
+    context,
+    error: null, // TODO
+    websocketStatus: websocket.status,
+    websocketError: null, // TODO
+    connect,
+    publishEvent
+  }
+}

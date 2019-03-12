@@ -11,7 +11,7 @@ import ImagingStudy from "./components/ImagingStudy";
 import Topic from "./components/Topic";
 import EventNotification from "./components/EventNotification";
 
-import { useFhircastWebSocket } from "./hooks";
+import { useFhirCastWebSocket } from "./hooks";
 import { DEFAULT_HUB_URL, EMPTY_CONTEXT, EVENT_TYPES } from "./constants";
 import { EventParams, EventType } from "./types";
 import { findResourceFromContext, /*createSubscriptionJson*/ } from "./utils";
@@ -25,7 +25,7 @@ export default function App() {
   const [subcribedEvents, setSubscribedEvents] = useState([]);
   const [sentEventId, setSentEventId] = useState();
 
-  const websocket = useFhircastWebSocket({
+  const websocket = useFhirCastWebSocket({
     hubUrl,
     topic,
     onEvent: evt => {}
@@ -133,6 +133,7 @@ export default function App() {
               status={websocket.status}
               isBound={websocket.isBound}
               topic={topic}
+              eventTypes={EVENT_TYPES}
               sentEventId={sentEventId}
               onPublishEvent={handlePublishEvent}
             />
