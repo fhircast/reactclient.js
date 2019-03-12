@@ -1,14 +1,14 @@
 import React from "react";
 import PublishEvent from "./PublishEvent";
 
-function WebSocketConnection({ topic, sentEventId, onPublishEvent }) {
-  console.warn("Fix PublishEvent isPublishAllowed");
-  const isPublishAllowed = Boolean(topic);
-
+function PublishEventCard({ topic, sentEventId, onPublishEvent }) {
   const handlePublishEvent = (evt, id) => {
     onPublishEvent(evt, id);
   };
 
+  console.warn("Fix PublishEvent isPublishAllowed");
+  const isPublishAllowed = Boolean(topic);
+  const footerAlertType = sentEventId ? "alert-success" : "";
   return (
     <div>
       <div className="fc-card">
@@ -23,7 +23,7 @@ function WebSocketConnection({ topic, sentEventId, onPublishEvent }) {
               onPublishEvent={handlePublishEvent}
             />
           </div>
-          <div className="card-footer">
+          <div className={`card-footer alert ${footerAlertType} mb-0`}>
             {sentEventId ? (
               <small className="text-muted">
                 Published event <strong>{sentEventId}</strong>
@@ -38,4 +38,4 @@ function WebSocketConnection({ topic, sentEventId, onPublishEvent }) {
   );
 }
 
-export default WebSocketConnection;
+export default PublishEventCard;

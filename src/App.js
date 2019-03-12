@@ -5,7 +5,7 @@ import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Header from "./components/Header";
-import WebSocketConnection from "./components/WebSocketConnection";
+import PublishEventCard from "./components/PublishEventCard";
 import Context from "./components/Context";
 import ImagingStudy from "./components/ImagingStudy";
 import Topic from "./components/Topic";
@@ -126,7 +126,7 @@ export default function App() {
               onSecretChange={setSecret}
               onTopicRequested={handleTopicRequested}
             />
-            <WebSocketConnection
+            <PublishEventCard
               status={websocket.status}
               isBound={websocket.isBound}
               topic={topic}

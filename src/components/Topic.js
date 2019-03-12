@@ -16,28 +16,6 @@ const WEBSOCKET_STATUS_TEXT = {
   [WebSocketStatus.Open]: "Open"
 };
 
-function TopicFooter({ subscribedEvents, topic, websocketStatus }) {
-  console.warn("Fix WebSocketConnection alert type");
-  const alertType = topic
-    ? "alert-success"
-    : WEBSOCKET_STATUS_ALERT_TYPE[websocketStatus];
-
-  return (
-    <div className={`card-footer alert ${alertType} mb-0`}>
-      <h6 className="d-inline">WebSocket</h6>
-      <small className="d-inline float-right text-muted">
-        {WEBSOCKET_STATUS_TEXT[websocketStatus]}
-      </small>
-      <br />
-      {subscribedEvents.map(e => (
-        <span key={e} className="badge badge-pill badge-info">
-          {e}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 function Topic({
   hubUrl,
   topic,
@@ -58,14 +36,20 @@ function Topic({
   };
 
   const hasTopic = Boolean(topic);
-  const alertType = hasTopic ? "alert-success" : "";
+  const headerAlertType = hasTopic ? "alert-success" : "";
+  console.warn("Fix Topic footer alert type");
+  const footerAlertType = hasTopic
+    ? "alert-success"
+    : WEBSOCKET_STATUS_ALERT_TYPE[websocketStatus];
 
   return (
     <div className="fc-card">
       <div className="card">
-        <div className={`card-header alert ${alertType} mb-0`}>
+        <div className={`card-header alert ${headerAlertType} mb-0`}>
           <h5 className="d-inline">Topic</h5>
-          <small className="d-inline float-right text-muted"><strong>{topic}</strong></small>
+          <small className="d-inline float-right text-muted">
+            <strong>{topic}</strong>
+          </small>
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
@@ -99,11 +83,18 @@ function Topic({
             </div>
           </form>
         </div>
-        <TopicFooter
-          topic={topic}
-          subscribedEvents={subscribedEvents}
-          websocketStatus={websocketStatus}
-        />
+        <div className={`card-footer alert ${footerAlertType} mb-0`}>
+          <h6 className="d-inline">WebSocket</h6>
+          <small className="d-inline float-right text-muted">
+            {WEBSOCKET_STATUS_TEXT[websocketStatus]}
+          </small>
+          <br />
+          {subscribedEvents.map(e => (
+            <span key={e} className="badge badge-pill badge-info">
+              {e}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
