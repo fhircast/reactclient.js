@@ -45,6 +45,7 @@ export default function App() {
     const eventType = evt[EventParams.Event];
     if (eventType === EventType.LogoutUser) {
       setTopic(null);
+      setSubscribedEvents([]);
     }
 
     //websocket.publishEvent(evt);
@@ -62,7 +63,7 @@ export default function App() {
       {
         className: "eventNotificationWrapper alert",
         bodyClassName: "w-100",
-        position: toast.POSITION.BOTTOM_LEFT,
+        position: toast.POSITION.TOP_RIGHT,
         closeButton: false,
       }
     );
@@ -120,6 +121,7 @@ export default function App() {
               topic={topic}
               isLoading={isTopicLoading}
               subscribedEvents={subcribedEvents}
+              websocketStatus={websocket.status}
               onHubUrlChange={setHubUrl}
               onSecretChange={setSecret}
               onTopicRequested={handleTopicRequested}
