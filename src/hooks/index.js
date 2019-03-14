@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import uuid from "uuid";
-import { WebSocketStatus } from "../types";
+import fhircast from "../services/fhircast";
+import { WebSocketStatus, SubscriptionMode } from "../types";
+import { createSubscriptionJson } from "../utils";
 
 const WAIT_INTERVAL = 500;
 const ENTER_KEY = 13;
@@ -150,7 +152,7 @@ export const useFhirCastWebSocket = ({
     }
   };
 
-  const publishEvent = (evt) => {
+  const publishEvent = evt => {
     const msg = {
       timestamp: new Date().toJSON(),
       id: uuid.v4(),
@@ -163,30 +165,61 @@ export const useFhirCastWebSocket = ({
   return { status, isBound, open, close: doClose, publishEvent };
 };
 
-
-export const useFhirCast = ({ hubUrl, eventTypes, onEvent }) => {
+export const useFhirCast = ({ hubUrl, eventTypes, onEvent, onError }) => {
   const [topic, setTopic] = useState();
   const [context, setContext] = useState([]);
   const websocket = useFhirCastWebSocket({ hubUrl, topic, onEvent });
 
-  const connect = async (username, secret) => {
-    // get topic
-    // subscribe to events
-    // get context
-    // connect websocket
+  const handleError = (err) => {
+    if (!err) {
+      return true;
+    }
+
+    onError(err);
+    return false;
   }
 
+  const connect = async (username, secret) => {
+    const [newTopic, topicError] = await fhircast.getTopic(hubUrl, username, secret);
+    if (!handleError(topicError)) {
+      return;
+    }
+
+    const mode = SubscriptionMode.subscribe;
+    const subscription = createSubscriptionJson({
+      topic,
+      secret,
+      eventTypes,
+      mode
+    });
+    const [, subscribeError] = await fhircast.subscribe(hubUrl, subscription);
+    if (!handleError(subscribeError)) {
+      return;
+    }
+
+    const [ctx, ctxError] = await fhircast.getContext(hubUrl, topic);
+    if (!handleError(ctxError)) {
+      return;
+    }
+    
+    setContext(ctx);
+    setTopic(newTopic);
+  };
+
   const publishEvent = async evt => {
-    // TODO
-  }
+    const msg = {
+      timestamp: new Date().toJSON(),
+      id: uuid.v4(),
+      event: evt
+    };
+    fhircast.publishEvent(hubUrl, topic, msg);
+  };
 
   return {
     topic,
     context,
-    error: null, // TODO
     websocketStatus: websocket.status,
-    websocketError: null, // TODO
     connect,
     publishEvent
-  }
-}
+  };
+};
