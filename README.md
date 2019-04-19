@@ -4,6 +4,8 @@
 
 The implementation is based on the WebSocket channel proposal described in [FHIRcast sandbox](https://github.com/fhircast/sandbox.js).
 
+:sparkles: **A new version of the client is currently being developed in [develop branch](https://github.com/fhircast/reactclient.js/tree/develop): refactored code, support for [.Net FHIRcast WebSocket specification](https://github.com/fhircast/.net), and a new UI.** :sparkles:
+
 ![Screen Capture Demo](https://github.com/akalliokoski/fhircast-websocket-demo/blob/master/doc/fhircast-websocket-demo-min.gif)
 
 ## Get started
@@ -32,9 +34,5 @@ PORT=3007 yarn start
 | Client 2 | https://fhircast2.z19.web.core.windows.net/ |                                                                                                                     |
 | Hub      | https://fhircast-ws.azurewebsites.net/      | [Fork](https://github.com/akalliokoski/sandbox.js) of [fhircast/sandbox.js](https://github.com/fhircast/sandbox.js) |
 
-##### Known issues with the online demo
-
-* ~~**Hub:** Published event is sent also to the WebSocket the event was published from.~~ :white_check_mark: Fixed in [the forked sandbox.js](https://github.com/akalliokoski/sandbox.js/commit/cf88e090738ea94ff0519f48096a3f594d305ca1).
-* **Hub:** Subscribed topic is ignored when published event is sent to WebSocket client.
 
 ###### This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
