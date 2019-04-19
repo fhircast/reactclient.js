@@ -2,7 +2,7 @@
 
 [FHIRcast](http://fhircast.org/) WebSocket client prototype in React.
 
-:exclamation: **Work in process: This is a new version of the original client in [master branch](https://github.com/fhircast/reactclient.js/tree/master).** :exclamation:
+:exclamation: **Work in progress: This is a new version of the original client in [master branch](https://github.com/fhircast/reactclient.js/tree/master).** :exclamation:
 
 :sparkles: 
 This new version of the client will have refactored code, support for [.Net FHIRcast WebSocket specification](https://github.com/fhircast/.net), and a new UI.
