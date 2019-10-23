@@ -26,13 +26,4 @@ PORT=3006 yarn start
 PORT=3007 yarn start
 ```
 
-## Online Demo
-
-| App      | URL                                         | Notes                                                                                                               |
-| -------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Client 1 | https://fhircast.z6.web.core.windows.net/   |                                                                                                                     |
-| Client 2 | https://fhircast2.z19.web.core.windows.net/ |                                                                                                                     |
-| Hub      | https://fhircast-ws.azurewebsites.net/      | [Fork](https://github.com/akalliokoski/sandbox.js) of [fhircast/sandbox.js](https://github.com/fhircast/sandbox.js) |
-
-
 ###### This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
